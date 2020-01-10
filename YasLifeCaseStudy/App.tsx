@@ -8,111 +8,96 @@
  * @format
  */
 
-import React from 'react';
+import React, {useState, useEffect} from 'react';
 import {
-  SafeAreaView,
-  StyleSheet,
-  ScrollView,
-  View,
-  Text,
-  StatusBar,
+	SafeAreaView,
+	StyleSheet,
+	StatusBar,
+	TextInput,
+	Picker,
+	View
 } from 'react-native';
+import {Currency} from 'src/interfaces/index';
+import ConvertMessage from './src/components/ConvertMessage';
 
-import {
-  Header,
-  LearnMoreLinks,
-  Colors,
-  DebugInstructions,
-  ReloadInstructions,
-} from 'react-native/Libraries/NewAppScreen';
+const baseCurrency: Currency = {
+	label: 'Euro',
+	code: 'EUR',
+	pickerValue: 'Euro'
+};
+const convertableCurrencies: Currency[] = [
+	{label: 'Danmark', code: 'DKK', pickerValue: 'denmark'},
+	{label: 'India', code: 'INR', pickerValue: 'india'},
+	{label: 'US', code: 'USD', pickerValue: 'us'},
+	{label: 'Thailand', code: 'THB', pickerValue: 'thailand'}
+];
 
-declare var global: {HermesInternal: null | {}};
+const renderPickerItems = (currencies: Currency[]) => {
+	return currencies.map((currency: Currency) => (
+		<Picker.Item
+			label={currency.label}
+			value={currency.pickerValue}
+			key={currency.pickerValue}
+		/>
+	));
+};
+
+const getCurrencyCodeFromPickerValue = (pickerValue: string) => {
+	for (let i = 0; i < convertableCurrencies.length; i++) {
+		if (convertableCurrencies[i].pickerValue === pickerValue) {
+			return convertableCurrencies[i].code;
+		}
+	}
+
+	return '';
+};
 
 const App = () => {
-  return (
-    <>
-      <StatusBar barStyle="dark-content" />
-      <SafeAreaView>
-        <ScrollView
-          contentInsetAdjustmentBehavior="automatic"
-          style={styles.scrollView}>
-          <Header />
-          {global.HermesInternal == null ? null : (
-            <View style={styles.engine}>
-              <Text style={styles.footer}>Engine: Hermes</Text>
-            </View>
-          )}
-          <View style={styles.body}>
-            <View style={styles.sectionContainer}>
-              <Text style={styles.sectionTitle}>Step One</Text>
-              <Text style={styles.sectionDescription}>
-                Edit <Text style={styles.highlight}>App.tsx</Text> to change
-                this screen and then come back to see your edits.
-              </Text>
-            </View>
-            <View style={styles.sectionContainer}>
-              <Text style={styles.sectionTitle}>See Your Changes</Text>
-              <Text style={styles.sectionDescription}>
-                <ReloadInstructions />
-              </Text>
-            </View>
-            <View style={styles.sectionContainer}>
-              <Text style={styles.sectionTitle}>Debug</Text>
-              <Text style={styles.sectionDescription}>
-                <DebugInstructions />
-              </Text>
-            </View>
-            <View style={styles.sectionContainer}>
-              <Text style={styles.sectionTitle}>Learn More</Text>
-              <Text style={styles.sectionDescription}>
-                Read the docs to discover what to do next:
-              </Text>
-            </View>
-            <LearnMoreLinks />
-          </View>
-        </ScrollView>
-      </SafeAreaView>
-    </>
-  );
+	const [userInput, setUserInput] = useState('1');
+	const [desiredCurrency, setDesiredCurrency] = useState(
+		convertableCurrencies[0].pickerValue
+	);
+
+	useEffect(() => {
+		console.log('hit the currency api');
+	}, [desiredCurrency, userInput]);
+
+	return (
+		<>
+			<StatusBar barStyle="dark-content" />
+			<SafeAreaView style={styles.appContainer}>
+				<View style={styles.appContainer}>
+					<TextInput
+						onChangeText={setUserInput}
+						value={userInput}
+						style={styles.valueInput}
+						autoCompleteType="off"
+						autoCorrect={false}
+						keyboardType="numeric"
+						selectTextOnFocus={true}
+					/>
+					<Picker
+						selectedValue={desiredCurrency}
+						onValueChange={value => {
+							setDesiredCurrency(value);
+						}}>
+						{renderPickerItems(convertableCurrencies)}
+					</Picker>
+					<ConvertMessage
+						fromCurrency={baseCurrency.code}
+						fromValue={Number.parseInt(userInput, 10)}
+						toCurrency={getCurrencyCodeFromPickerValue(desiredCurrency)}
+						toValue={999}
+					/>
+				</View>
+			</SafeAreaView>
+		</>
+	);
 };
 
 const styles = StyleSheet.create({
-  scrollView: {
-    backgroundColor: Colors.lighter,
-  },
-  engine: {
-    position: 'absolute',
-    right: 0,
-  },
-  body: {
-    backgroundColor: Colors.white,
-  },
-  sectionContainer: {
-    marginTop: 32,
-    paddingHorizontal: 24,
-  },
-  sectionTitle: {
-    fontSize: 24,
-    fontWeight: '600',
-    color: Colors.black,
-  },
-  sectionDescription: {
-    marginTop: 8,
-    fontSize: 18,
-    fontWeight: '400',
-    color: Colors.dark,
-  },
-  highlight: {
-    fontWeight: '700',
-  },
-  footer: {
-    color: Colors.dark,
-    fontSize: 12,
-    fontWeight: '600',
-    padding: 4,
-    paddingRight: 12,
-    textAlign: 'right',
-  },
+	appContainer: {flex: 1},
+	valueInput: {height: 40, borderColor: 'gray', borderWidth: 1}
 });
 
 export default App;
