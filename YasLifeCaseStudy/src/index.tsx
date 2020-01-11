@@ -70,8 +70,8 @@ const CurrencyConverter = (props: any) => {
 	const baseCurrency = currencies[0];
 
 	useEffect(() => {
-		console.log('hit the currency api');
-	}, [desiredCurrency, userInput]);
+		getLatestRates();
+	}, [desiredCurrency, userInput, getLatestRates]);
 
 	if (isFetchingLatestRates) {
 		return (
