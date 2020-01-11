@@ -8,14 +8,16 @@
  * @format
  */
 
-import React, { useEffect } from 'react';
+import React from 'react';
 import {
 	SafeAreaView,
 	StyleSheet,
 	StatusBar,
 	TextInput,
 	Picker,
-	View
+	View,
+	Button,
+	ActivityIndicator
 } from 'react-native';
 import { Currency } from 'src/interfaces/index';
 import ConvertMessage from './components/ConvertMessage';
@@ -26,18 +28,13 @@ import {
 	changeDesiredCurrency,
 	fetchLatestRates
 } from './actions/index';
-import FetchingRates from './components/FetchingRates';
 import LatestRatesFetchError from './components/LatestRatesFetchError';
 
 const renderPickerItems = (items: Currency[]) => {
 	return items.map((item: Currency, index: number) => {
 		if (index !== 0) {
 			return (
-				<Picker.Item
-					label={item.label}
-					value={item.pickerValue}
-					key={item.pickerValue}
-				/>
+				<Picker.Item label={item.label} value={item.code} key={item.code} />
 			);
 		}
 
@@ -45,14 +42,20 @@ const renderPickerItems = (items: Currency[]) => {
 	});
 };
 
-const getCurrencyCodeFromPickerValue = (pickerValue: string) => {
-	for (let i = 0; i < currencies.length; i++) {
-		if (currencies[i].pickerValue === pickerValue) {
-			return currencies[i].code;
-		}
+const renderConvertButton = (isLoading: boolean, onPress: any) => {
+	if (isLoading) {
+		return (
+			<View style={styles.convertButtonWrapper}>
+				<ActivityIndicator size="small" />
+			</View>
+		);
 	}
 
-	return '';
+	return (
+		<View style={styles.convertButtonWrapper}>
+			<Button title="Convert" onPress={onPress} />
+		</View>
+	);
 };
 
 const CurrencyConverter = (props: any) => {
@@ -63,33 +66,19 @@ const CurrencyConverter = (props: any) => {
 		setUserInput,
 		isFetchingLatestRates,
 		latestRatesFetchError,
-		latestRatesFetchResponse,
-		getLatestRates
+		outputs,
+		onConvertPress,
+		latestRatesFetchResponse
 	} = props;
 
 	const baseCurrency = currencies[0];
-
-	useEffect(() => {
-		getLatestRates();
-	}, [desiredCurrency, userInput, getLatestRates]);
-
-	if (isFetchingLatestRates) {
-		return (
-			<>
-				<StatusBar barStyle="dark-content" />
-				<SafeAreaView style={styles.appContainer}>
-					<FetchingRates />
-				</SafeAreaView>
-			</>
-		);
-	}
 
 	if (latestRatesFetchError) {
 		return (
 			<>
 				<StatusBar barStyle="dark-content" />
 				<SafeAreaView style={styles.appContainer}>
-					<LatestRatesFetchError onPress={getLatestRates} />
+					<LatestRatesFetchError onPress={onConvertPress} />
 				</SafeAreaView>
 			</>
 		);
@@ -113,14 +102,21 @@ const CurrencyConverter = (props: any) => {
 						selectedValue={desiredCurrency}
 						onValueChange={value => {
 							setDesiredCurrency(value);
-						}}>
+						}}
+						prompt="Select currency">
 						{renderPickerItems(currencies)}
 					</Picker>
+					{renderConvertButton(isFetchingLatestRates, () => {
+						onConvertPress(desiredCurrency);
+					})}
 					<ConvertMessage
 						fromCurrency={baseCurrency.code}
 						fromValue={Number.parseFloat(userInput)}
-						toCurrency={getCurrencyCodeFromPickerValue(desiredCurrency)}
-						toValue={999}
+						toCurrency={desiredCurrency}
+						toValue={outputs ? outputs[desiredCurrency].toFixed(2) : 0}
+						timestamp={
+							latestRatesFetchResponse ? latestRatesFetchResponse.timestamp : 0
+						}
 					/>
 				</View>
 			</SafeAreaView>
@@ -135,7 +131,8 @@ const styles = StyleSheet.create({
 		paddingLeft: 20,
 		paddingRight: 20
 	},
-	valueInput: { height: 40, borderColor: 'gray', borderWidth: 1 }
+	valueInput: { height: 40, borderColor: 'gray', borderWidth: 1 },
+	convertButtonWrapper: { height: 50 }
 });
 
 const mapStateToProps = (state: any) => ({
@@ -146,7 +143,8 @@ const mapDispatchToProps = (dispatch: any) => ({
 	setUserInput: (value: string) =>
 		dispatch(changeUserInput(Number.parseFloat(value))),
 	setDesiredCurrency: (value: string) => dispatch(changeDesiredCurrency(value)),
-	getLatestRates: () => dispatch(fetchLatestRates())
+	onConvertPress: (currencyCode: string) =>
+		dispatch(fetchLatestRates(currencyCode))
 });
 
 // eslint-disable-next-line prettier/prettier

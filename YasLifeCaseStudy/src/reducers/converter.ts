@@ -7,13 +7,15 @@ import {
 	FETCH_LATEST_RATES_SUCCESS,
 	FETCH_LATEST_RATES_ERROR
 } from '../actions/index';
+import { convertCurrency } from '../util';
 
 const defaulState = {
 	userInput: 1,
-	desiredCurrency: currencies[1].pickerValue,
+	desiredCurrency: currencies[1].code,
 	isFetchingLatestRates: false,
 	latestRatesFetchError: null,
-	latestRatesFetchResponse: null
+	latestRatesFetchResponse: null,
+	outputs: null
 };
 
 const converter = (state = defaulState, action: ReduxAction) => {
@@ -43,11 +45,16 @@ const converter = (state = defaulState, action: ReduxAction) => {
 		case FETCH_LATEST_RATES_SUCCESS:
 			return {
 				...state,
-				latestRatesFetchResponse: action.payload
+				isFetchingLatestRates: false,
+				latestRatesFetchError: null,
+				latestRatesFetchResponse: action.payload,
+				outputs: convertCurrency(state.userInput, action.payload.rates)
 			};
 		case FETCH_LATEST_RATES_ERROR:
 			return {
 				...state,
+				isFetchingLatestRates: false,
+				latestRatesFetchResponse: null,
 				latestRatesFetchError: action.payload
 			};
 		default:

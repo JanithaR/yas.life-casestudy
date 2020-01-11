@@ -1,3 +1,12 @@
+import { call, put } from 'redux-saga/effects';
+import { makeRequest } from '../api';
+import {
+	baseApiUrl,
+	latestEndpoint,
+	fixerKey,
+	currencySymbols
+} from '../config';
+
 export const changeUserInput = (input: number) => ({
 	type: CHANGE_USER_INPUT,
 	payload: input
@@ -8,9 +17,29 @@ export const changeDesiredCurrency = (desiredCurrency: string) => ({
 	payload: desiredCurrency
 });
 
-export const fetchLatestRates = () => ({
-	type: FETCH_LATEST_RATES
+export const fetchLatestRates = (currencyCode: string) => ({
+	type: FETCH_LATEST_RATES,
+	payload: currencyCode
 });
+
+export function* convertCurrency() {
+	try {
+		const response = yield call(
+			makeRequest,
+			`${baseApiUrl}${latestEndpoint}?access_key=${fixerKey}&symbols=${currencySymbols}`
+		);
+
+		yield put({
+			type: FETCH_LATEST_RATES_SUCCESS,
+			payload: response
+		});
+	} catch (error) {
+		yield put({
+			type: FETCH_LATEST_RATES_ERROR,
+			payload: error.errorMessage
+		});
+	}
+}
 
 export const fetchLatestRateSuccess = () => ({
 	type: FETCH_LATEST_RATES_SUCCESS
