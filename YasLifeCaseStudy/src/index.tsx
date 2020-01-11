@@ -23,14 +23,14 @@ import {currencies} from './config';
 import {connect} from 'react-redux';
 import {changeUserInput, changeDesiredCurrency} from './actions/index';
 
-const renderPickerItems = (currencies: Currency[]) => {
-	return currencies.map((currency: Currency, index: number) => {
+const renderPickerItems = (items: Currency[]) => {
+	return items.map((item: Currency, index: number) => {
 		if (index !== 0) {
 			return (
 				<Picker.Item
-					label={currency.label}
-					value={currency.pickerValue}
-					key={currency.pickerValue}
+					label={item.label}
+					value={item.pickerValue}
+					key={item.pickerValue}
 				/>
 			);
 		}
