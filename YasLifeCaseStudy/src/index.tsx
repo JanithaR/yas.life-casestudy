@@ -106,4 +106,5 @@ const mapDispatchToProps = (dispatch: any) => ({
 	setDesiredCurrency: (value: string) => dispatch(changeDesiredCurrency(value))
 });
 
+// eslint-disable-next-line prettier/prettier
 export default connect(mapStateToProps, mapDispatchToProps)(CurrencyConverter);
