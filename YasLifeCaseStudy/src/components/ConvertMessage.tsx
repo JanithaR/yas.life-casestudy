@@ -1,5 +1,5 @@
 import React from 'react';
-import {Text, View, StyleSheet} from 'react-native';
+import { Text, View, StyleSheet } from 'react-native';
 
 export interface Props {
 	fromValue: number;
@@ -20,9 +20,9 @@ const ConvertMessage: React.FC<Props> = props => {
 };
 
 const styles = StyleSheet.create({
-	container: {alignItems: 'center'},
-	text1: {fontSize: 24},
-	text2: {fontSize: 36}
+	container: { alignItems: 'center' },
+	text1: { fontSize: 24 },
+	text2: { fontSize: 36 }
 });
 
 export default ConvertMessage;

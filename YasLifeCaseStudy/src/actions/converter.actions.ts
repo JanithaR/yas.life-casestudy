@@ -8,7 +8,7 @@ export const changeDesiredCurrency = (desiredCurrency: string) => ({
 	payload: desiredCurrency
 });
 
-export const fetchLatestRate = () => ({
+export const fetchLatestRates = () => ({
 	type: FETCH_LATEST_RATES
 });
 

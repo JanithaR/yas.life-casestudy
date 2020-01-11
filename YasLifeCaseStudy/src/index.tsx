@@ -21,7 +21,13 @@ import { Currency } from 'src/interfaces/index';
 import ConvertMessage from './components/ConvertMessage';
 import { currencies } from './config';
 import { connect } from 'react-redux';
-import { changeUserInput, changeDesiredCurrency } from './actions/index';
+import {
+	changeUserInput,
+	changeDesiredCurrency,
+	fetchLatestRates
+} from './actions/index';
+import FetchingRates from './components/FetchingRates';
+import LatestRatesFetchError from './components/LatestRatesFetchError';
 
 const renderPickerItems = (items: Currency[]) => {
 	return items.map((item: Currency, index: number) => {
@@ -54,7 +60,11 @@ const CurrencyConverter = (props: any) => {
 		userInput,
 		desiredCurrency,
 		setDesiredCurrency,
-		setUserInput
+		setUserInput,
+		isFetchingLatestRates,
+		latestRatesFetchError,
+		latestRatesFetchResponse,
+		getLatestRates
 	} = props;
 
 	const baseCurrency = currencies[0];
@@ -62,6 +72,28 @@ const CurrencyConverter = (props: any) => {
 	useEffect(() => {
 		console.log('hit the currency api');
 	}, [desiredCurrency, userInput]);
+
+	if (isFetchingLatestRates) {
+		return (
+			<>
+				<StatusBar barStyle="dark-content" />
+				<SafeAreaView style={styles.appContainer}>
+					<FetchingRates />
+				</SafeAreaView>
+			</>
+		);
+	}
+
+	if (latestRatesFetchError) {
+		return (
+			<>
+				<StatusBar barStyle="dark-content" />
+				<SafeAreaView style={styles.appContainer}>
+					<LatestRatesFetchError onPress={getLatestRates} />
+				</SafeAreaView>
+			</>
+		);
+	}
 
 	return (
 		<>
@@ -97,7 +129,12 @@ const CurrencyConverter = (props: any) => {
 };
 
 const styles = StyleSheet.create({
-	appContainer: { flex: 1 },
+	appContainer: {
+		flex: 1,
+		justifyContent: 'center',
+		paddingLeft: 20,
+		paddingRight: 20
+	},
 	valueInput: { height: 40, borderColor: 'gray', borderWidth: 1 }
 });
 
@@ -108,7 +145,8 @@ const mapStateToProps = (state: any) => ({
 const mapDispatchToProps = (dispatch: any) => ({
 	setUserInput: (value: string) =>
 		dispatch(changeUserInput(Number.parseFloat(value))),
-	setDesiredCurrency: (value: string) => dispatch(changeDesiredCurrency(value))
+	setDesiredCurrency: (value: string) => dispatch(changeDesiredCurrency(value)),
+	getLatestRates: () => dispatch(fetchLatestRates())
 });
 
 // eslint-disable-next-line prettier/prettier
