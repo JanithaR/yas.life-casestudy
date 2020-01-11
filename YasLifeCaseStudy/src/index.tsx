@@ -29,6 +29,7 @@ import {
 	fetchLatestRates
 } from './actions/index';
 import LatestRatesFetchError from './components/LatestRatesFetchError';
+import { formatCurrency } from './util';
 
 const renderPickerItems = (items: Currency[]) => {
 	return items.map((item: Currency, index: number) => {
@@ -71,8 +72,6 @@ const CurrencyConverter = (props: any) => {
 		latestRatesFetchResponse
 	} = props;
 
-	const baseCurrency = currencies[0];
-
 	if (latestRatesFetchError) {
 		return (
 			<>
@@ -110,10 +109,15 @@ const CurrencyConverter = (props: any) => {
 						onConvertPress(desiredCurrency);
 					})}
 					<ConvertMessage
-						fromCurrency={baseCurrency.code}
-						fromValue={Number.parseFloat(userInput)}
-						toCurrency={desiredCurrency}
-						toValue={outputs ? outputs[desiredCurrency].toFixed(2) : 0}
+						from={formatCurrency(
+							Number.parseFloat(userInput),
+							currencies[0].code
+						)}
+						to={
+							outputs
+								? formatCurrency(outputs[desiredCurrency], desiredCurrency)
+								: formatCurrency(0, desiredCurrency)
+						}
 						timestamp={
 							latestRatesFetchResponse ? latestRatesFetchResponse.timestamp : 0
 						}

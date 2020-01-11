@@ -3,10 +3,8 @@ import { Text, View, StyleSheet } from 'react-native';
 import moment from 'moment';
 
 export interface Props {
-	fromValue: number;
-	fromCurrency: string;
-	toValue: number;
-	toCurrency: string;
+	from: string;
+	to: string;
 	timestamp: number;
 }
 
@@ -24,12 +22,12 @@ const renderTimestampMessage = (timestamp: number) => {
 };
 
 const ConvertMessage: React.FC<Props> = props => {
-	const { fromValue, fromCurrency, toValue, toCurrency, timestamp } = props;
+	const { from: fromValue, to: toValue, timestamp } = props;
 
 	return (
 		<View style={styles.container}>
-			<Text style={styles.text1}>{`${fromValue} ${fromCurrency} =`}</Text>
-			<Text style={styles.text2}>{`${toValue} ${toCurrency}`}</Text>
+			<Text style={styles.text1}>{`${fromValue} =`}</Text>
+			<Text style={styles.text2}>{`${toValue}`}</Text>
 			{renderTimestampMessage(timestamp)}
 		</View>
 	);

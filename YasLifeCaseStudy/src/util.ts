@@ -13,3 +13,11 @@ export const convertCurrency = (amount: number, rates: Rate[]) => {
 
 	return output;
 };
+
+export const formatCurrency = (value: number, currency: string) => {
+	return new Intl.NumberFormat(undefined, {
+		style: 'currency',
+		currency,
+		maximumFractionDigits: 2
+	}).format(value);
+};
