@@ -30,6 +30,7 @@ import {
 } from './actions/index';
 import LatestRatesFetchError from './components/LatestRatesFetchError';
 import { formatCurrency } from './util';
+import colors from './res/colors';
 
 const renderPickerItems = (items: Currency[]) => {
 	return items.map((item: Currency, index: number) => {
@@ -86,28 +87,30 @@ const CurrencyConverter = (props: any) => {
 	return (
 		<>
 			<StatusBar barStyle="dark-content" />
-			<SafeAreaView style={styles.appContainer}>
+			<SafeAreaView style={styles.safeArea}>
 				<View style={styles.appContainer}>
-					<TextInput
-						onChangeText={setUserInput}
-						value={userInput.toString()}
-						style={styles.valueInput}
-						autoCompleteType="off"
-						autoCorrect={false}
-						keyboardType="numeric"
-						selectTextOnFocus={true}
-					/>
-					<Picker
-						selectedValue={desiredCurrency}
-						onValueChange={value => {
-							setDesiredCurrency(value);
-						}}
-						prompt="Select currency">
-						{renderPickerItems(currencies)}
-					</Picker>
-					{renderConvertButton(isFetchingLatestRates, () => {
-						onConvertPress(desiredCurrency);
-					})}
+					<View style={styles.inputWrapper}>
+						<TextInput
+							onChangeText={setUserInput}
+							value={userInput.toString()}
+							style={styles.valueInput}
+							autoCompleteType="off"
+							autoCorrect={false}
+							keyboardType="numeric"
+							selectTextOnFocus={true}
+						/>
+						<Picker
+							selectedValue={desiredCurrency}
+							onValueChange={value => {
+								setDesiredCurrency(value);
+							}}
+							prompt="Select currency">
+							{renderPickerItems(currencies)}
+						</Picker>
+						{renderConvertButton(isFetchingLatestRates, () => {
+							onConvertPress(desiredCurrency);
+						})}
+					</View>
 					<ConvertMessage
 						from={formatCurrency(
 							Number.parseFloat(userInput),
@@ -129,13 +132,29 @@ const CurrencyConverter = (props: any) => {
 };
 
 const styles = StyleSheet.create({
-	appContainer: {
+	safeArea: {
 		flex: 1,
+		backgroundColor: colors.backgroundColor,
+		justifyContent: 'center'
+	},
+	appContainer: {
 		justifyContent: 'center',
+		paddingTop: 10,
 		paddingLeft: 20,
+		paddingBottom: 10,
 		paddingRight: 20
 	},
-	valueInput: { height: 40, borderColor: 'gray', borderWidth: 1 },
+	inputWrapper: {
+		backgroundColor: 'white',
+		borderRadius: 10,
+		marginBottom: 5
+	},
+	valueInput: {
+		height: 40,
+		borderColor: colors.backgroundColor,
+		borderWidth: 1,
+		borderRadius: 10
+	},
 	convertButtonWrapper: { height: 50 }
 });
 
