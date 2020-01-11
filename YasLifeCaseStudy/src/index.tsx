@@ -8,7 +8,7 @@
  * @format
  */
 
-import React, {useEffect} from 'react';
+import React, { useEffect } from 'react';
 import {
 	SafeAreaView,
 	StyleSheet,
@@ -17,11 +17,11 @@ import {
 	Picker,
 	View
 } from 'react-native';
-import {Currency} from 'src/interfaces/index';
+import { Currency } from 'src/interfaces/index';
 import ConvertMessage from './components/ConvertMessage';
-import {currencies} from './config';
-import {connect} from 'react-redux';
-import {changeUserInput, changeDesiredCurrency} from './actions/index';
+import { currencies } from './config';
+import { connect } from 'react-redux';
+import { changeUserInput, changeDesiredCurrency } from './actions/index';
 
 const renderPickerItems = (items: Currency[]) => {
 	return items.map((item: Currency, index: number) => {
@@ -50,13 +50,18 @@ const getCurrencyCodeFromPickerValue = (pickerValue: string) => {
 };
 
 const CurrencyConverter = (props: any) => {
-	const {userInput, desiredCurrency, setDesiredCurrency, setUserInput} = props;
+	const {
+		userInput,
+		desiredCurrency,
+		setDesiredCurrency,
+		setUserInput
+	} = props;
 
 	const baseCurrency = currencies[0];
 
 	useEffect(() => {
 		console.log('hit the currency api');
-	}, [desiredCurrency]);
+	}, [desiredCurrency, userInput]);
 
 	return (
 		<>
@@ -92,8 +97,8 @@ const CurrencyConverter = (props: any) => {
 };
 
 const styles = StyleSheet.create({
-	appContainer: {flex: 1},
-	valueInput: {height: 40, borderColor: 'gray', borderWidth: 1}
+	appContainer: { flex: 1 },
+	valueInput: { height: 40, borderColor: 'gray', borderWidth: 1 }
 });
 
 const mapStateToProps = (state: any) => ({
