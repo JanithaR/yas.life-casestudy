@@ -15,13 +15,13 @@ import CurrencyConverter from './src/index';
 import Storybook from './storybook';
 
 const App = (): ReactElement => {
-	/* return (
+	return (
 		<Provider store={store}>
 			<CurrencyConverter />
 		</Provider>
-	); */
+	);
 
-	return <Storybook />;
+	// return <Storybook />;
 };
 
 export default App;
