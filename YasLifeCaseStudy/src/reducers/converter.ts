@@ -7,7 +7,7 @@ import {
 	FETCH_LATEST_RATES_SUCCESS,
 	FETCH_LATEST_RATES_ERROR
 } from '../actions/index';
-import { convertCurrency } from '../util';
+import { convertCurrency } from '../utils';
 
 const defaulState = {
 	userInput: 1,
