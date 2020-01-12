@@ -10,13 +10,10 @@ To run unit tests,
 `npm run test`
 
 To test UI elements with Storybook,
-1. In `App.js` comment `return (
-		<Provider store={store}>
-			<CurrencyConverter />
-		</Provider>
-	);` and uncomment `return <Storybook />;`
+1. In `App.tsx` comment `export default App;` and uncomment `export default Storybook;`
 2. `npm run storybook`
 3. `npm run start`
+4. Run or refresh the app
 
 ![iOS screen](https://i.imgur.com/M0eWDDP.png)
 ![Android screen](https://imgur.com/3Mq8qVh.png)
