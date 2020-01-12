@@ -12,13 +12,16 @@ import React, { ReactElement } from 'react';
 import { Provider } from 'react-redux';
 import store from './src/store';
 import CurrencyConverter from './src/index';
+import Storybook from './storybook';
 
 const App = (): ReactElement => {
-	return (
+	/* return (
 		<Provider store={store}>
 			<CurrencyConverter />
 		</Provider>
-	);
+	); */
+
+	return <Storybook />;
 };
 
 export default App;
