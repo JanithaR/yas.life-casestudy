@@ -29,9 +29,19 @@ const converter = (
 				desiredCurrency: action.payload
 			};
 		case CHANGE_USER_INPUT:
+			let outputs = null;
+
+			if (state.latestRatesFetchResponse) {
+				outputs = convertCurrency(
+					Number.parseFloat(action.payload),
+					state.latestRatesFetchResponse.rates
+				);
+			}
+
 			return {
 				...state,
-				userInput: action.payload
+				userInput: action.payload,
+				outputs
 			};
 		case FETCH_LATEST_RATES:
 			return {

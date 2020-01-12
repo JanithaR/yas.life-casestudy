@@ -21,7 +21,7 @@ import {
 	KeyboardAvoidingView
 } from 'react-native';
 import { Currency } from 'src/interfaces/index';
-import ConvertMessage from './components/ConvertMessage';
+import ConvertedOutput from './components/ConvertedOutput';
 import { currencies } from './config';
 import { connect } from 'react-redux';
 import {
@@ -32,6 +32,7 @@ import {
 import LatestRatesFetchError from './components/LatestRatesFetchError';
 import { formatCurrency } from './utils';
 import colors from './res/colors';
+import { ThemeProvider } from 'styled-components/native';
 
 const renderPickerItems = (items: Currency[]) => {
 	return items.map((item: Currency, index: number) => {
@@ -79,17 +80,17 @@ const CurrencyConverter = (props: any) => {
 
 	if (latestRatesFetchError) {
 		return (
-			<>
+			<ThemeProvider theme={{}}>
 				<StatusBar barStyle="dark-content" />
 				<SafeAreaView style={styles.appContainer}>
 					<LatestRatesFetchError onPress={onConvertPress} />
 				</SafeAreaView>
-			</>
+			</ThemeProvider>
 		);
 	}
 
 	return (
-		<>
+		<ThemeProvider theme={{}}>
 			<StatusBar barStyle="dark-content" />
 			<SafeAreaView style={styles.safeArea}>
 				<KeyboardAvoidingView
@@ -117,7 +118,7 @@ const CurrencyConverter = (props: any) => {
 							onConvertPress(desiredCurrency);
 						})}
 					</View>
-					<ConvertMessage
+					<ConvertedOutput
 						from={formatCurrency(
 							Number.parseFloat(userInput),
 							currencies[0].code
@@ -133,7 +134,7 @@ const CurrencyConverter = (props: any) => {
 					/>
 				</KeyboardAvoidingView>
 			</SafeAreaView>
-		</>
+		</ThemeProvider>
 	);
 };
 
