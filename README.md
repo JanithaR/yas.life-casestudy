@@ -17,3 +17,5 @@ To test UI elements with Storybook,
 	);` and uncomment `return <Storybook />;`
 2. `npm run storybook`
 3. `npm run start`
+
+Note: *There are issue with storybook which I have not figured out how to fix so it won't work as expected
