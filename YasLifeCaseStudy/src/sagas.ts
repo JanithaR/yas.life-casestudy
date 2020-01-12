@@ -4,8 +4,8 @@ import {
 	convertCurrencySaga
 } from './actions/converter.actions';
 
-function* mySaga() {
+function* yasLifeSagas() {
 	yield takeLatest(FETCH_LATEST_RATES, convertCurrencySaga);
 }
 
-export default mySaga;
+export default yasLifeSagas;
