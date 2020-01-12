@@ -8,3 +8,17 @@ To get started,
 
 To run unit tests,
 `npm run test`
+
+To test UI elements with Storybook,
+1. In `App.js` comment `return (
+		<Provider store={store}>
+			<CurrencyConverter />
+		</Provider>
+	);` and uncomment `return <Storybook />;`
+2. `npm run storybook`
+3. `npm run start`
+
+Note: *There are issues with storybook which I have not figured out how to fix so it won't work as expected
+
+![iOS screen](https://i.imgur.com/M0eWDDP.png)
+![Android screen](https://imgur.com/3Mq8qVh.png)
