@@ -17,9 +17,10 @@ import {
 	Picker,
 	View,
 	Button,
-	ActivityIndicator
+	ActivityIndicator,
+	KeyboardAvoidingView
 } from 'react-native';
-import { Currency, Rate, FixerLatest } from 'src/interfaces/index';
+import { Currency } from 'src/interfaces/index';
 import ConvertMessage from './components/ConvertMessage';
 import { currencies } from './config';
 import { connect } from 'react-redux';
@@ -91,7 +92,10 @@ const CurrencyConverter = (props: any) => {
 		<>
 			<StatusBar barStyle="dark-content" />
 			<SafeAreaView style={styles.safeArea}>
-				<View style={styles.appContainer}>
+				<KeyboardAvoidingView
+					style={styles.appContainer}
+					behavior="padding"
+					enabled>
 					<View style={styles.inputWrapper}>
 						<TextInput
 							onChangeText={setUserInput}
@@ -99,8 +103,7 @@ const CurrencyConverter = (props: any) => {
 							style={styles.valueInput}
 							autoCompleteType="off"
 							autoCorrect={false}
-							keyboardType="numeric"
-							selectTextOnFocus={true}
+							keyboardType="decimal-pad"
 						/>
 						<Picker
 							selectedValue={desiredCurrency}
@@ -128,7 +131,7 @@ const CurrencyConverter = (props: any) => {
 							latestRatesFetchResponse ? latestRatesFetchResponse.timestamp : 0
 						}
 					/>
-				</View>
+				</KeyboardAvoidingView>
 			</SafeAreaView>
 		</>
 	);
@@ -137,11 +140,9 @@ const CurrencyConverter = (props: any) => {
 const styles = StyleSheet.create({
 	safeArea: {
 		flex: 1,
-		backgroundColor: colors.backgroundColor,
-		justifyContent: 'center'
+		backgroundColor: colors.backgroundColor
 	},
 	appContainer: {
-		justifyContent: 'center',
 		paddingTop: 10,
 		paddingLeft: 20,
 		paddingBottom: 10,
@@ -166,8 +167,7 @@ const mapStateToProps = (state: any) => ({
 });
 
 const mapDispatchToProps = (dispatch: any) => ({
-	setUserInput: (value: string) =>
-		dispatch(changeUserInput(Number.parseFloat(value))),
+	setUserInput: (value: string) => dispatch(changeUserInput(value)),
 	setDesiredCurrency: (value: string) => dispatch(changeDesiredCurrency(value)),
 	onConvertPress: () => dispatch(fetchLatestRates())
 });
