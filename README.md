@@ -5,3 +5,6 @@ To get started,
 2. `cd YasLifeCaseStudy`
 3. `npm install`
 4. `npm run android` or `npm run ios`
+
+To run unit tests,
+`npm run test`
