@@ -158,7 +158,12 @@ const styles = StyleSheet.create({
 		height: 40,
 		borderColor: colors.backgroundColor,
 		borderWidth: 1,
-		borderRadius: 10
+		borderRadius: 10,
+		fontSize: 24,
+		marginLeft: 5,
+		marginTop: 5,
+		marginRight: 5,
+		padding: 5
 	},
 	convertButtonWrapper: { height: 50 }
 });
