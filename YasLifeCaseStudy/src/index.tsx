@@ -29,7 +29,6 @@ import {
 	changeDesiredCurrency,
 	fetchLatestRates
 } from './actions/index';
-import LatestRatesFetchError from './components/LatestRatesFetchError';
 import { formatCurrency } from './utils';
 import colors from './res/colors';
 import { ThemeProvider } from 'styled-components/native';
@@ -76,17 +75,6 @@ const CurrencyConverter = (props: any) => {
 		latestRatesFetchResponse
 	} = props;
 
-	if (latestRatesFetchError) {
-		return (
-			<ThemeProvider theme={{}}>
-				<StatusBar barStyle="dark-content" />
-				<SafeAreaView style={styles.appContainer}>
-					<LatestRatesFetchError onPress={onConvertPress} />
-				</SafeAreaView>
-			</ThemeProvider>
-		);
-	}
-
 	return (
 		<ThemeProvider theme={{}}>
 			<StatusBar barStyle="dark-content" />
@@ -98,7 +86,7 @@ const CurrencyConverter = (props: any) => {
 					<View style={styles.inputWrapper}>
 						<TextInput
 							onChangeText={setUserInput}
-							value={userInput.toString()}
+							value={userInput}
 							style={styles.valueInput}
 							autoCompleteType="off"
 							autoCorrect={false}
@@ -129,6 +117,7 @@ const CurrencyConverter = (props: any) => {
 						timestamp={
 							latestRatesFetchResponse ? latestRatesFetchResponse.timestamp : 0
 						}
+						error={latestRatesFetchError}
 					/>
 				</KeyboardAvoidingView>
 			</SafeAreaView>

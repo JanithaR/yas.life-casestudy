@@ -36,7 +36,7 @@ export function* convertCurrencySaga() {
 	} catch (error) {
 		yield put({
 			type: FETCH_LATEST_RATES_ERROR,
-			payload: error.errorMessage
+			payload: 'Fetching rates failed!'
 		});
 	}
 }

@@ -1,5 +1,5 @@
-import React, { useEffect } from 'react';
-import { Text, View, StyleSheet } from 'react-native';
+import React from 'react';
+import { View, StyleSheet } from 'react-native';
 import moment from 'moment';
 import FromText from './FromText';
 import ToText from './ToText';
@@ -9,9 +9,10 @@ export interface Props {
 	from: string;
 	to: string;
 	timestamp: number;
+	error?: string;
 }
 
-const renderStatus = (timestamp: number) => {
+const renderStatus = (timestamp: number, error: string) => {
 	if (timestamp) {
 		const message: string = `Converted according to the rates as of ${moment(
 			timestamp * 1000
@@ -20,19 +21,27 @@ const renderStatus = (timestamp: number) => {
 		return <StatusText status={message} />;
 	}
 
+	if (error) {
+		return <StatusText status={error} />;
+	}
+
 	return <StatusText />;
 };
 
-const ConvertMessage: React.FC<Props> = props => {
-	const { from, to, timestamp } = props;
+const ConvertOutput: React.FC<Props> = props => {
+	const { from, to, timestamp, error } = props;
 
 	return (
 		<View style={styles.container}>
 			<FromText text={from} />
 			<ToText text={to} />
-			{renderStatus(timestamp)}
+			{renderStatus(timestamp, error)}
 		</View>
 	);
+};
+
+ConvertOutput.defaultProps = {
+	error: ''
 };
 
 const styles = StyleSheet.create({
@@ -44,4 +53,4 @@ const styles = StyleSheet.create({
 	}
 });
 
-export default ConvertMessage;
+export default ConvertOutput;
