@@ -12,7 +12,7 @@ import { convertCurrency } from '../utils';
 
 describe('Converter reducer', () => {
 	const mockDefaulState: ReduxState = {
-		userInput: 1000,
+		userInput: '1000',
 		desiredCurrency: currencies[2].code,
 		isFetchingLatestRates: false,
 		latestRatesFetchError: null,
@@ -57,13 +57,6 @@ describe('Converter reducer', () => {
 			...mockDefaulState,
 			userInput: 5000
 		});
-
-		mockReduxAction = { ...mockReduxAction, payload: 0 };
-
-		expect(converter(mockDefaulState, mockReduxAction)).toEqual({
-			...mockDefaulState,
-			userInput: 1
-		});
 	});
 
 	it('should return new state with rates fetch state reflected', () => {
@@ -100,7 +93,10 @@ describe('Converter reducer', () => {
 		expect(outputs.latestRatesFetchError).toBeNull();
 		expect(outputs.latestRatesFetchResponse).toEqual(mockReduxAction.payload);
 		expect(outputs.outputs).toEqual(
-			convertCurrency(mockDefaulState.userInput, mockReduxAction.payload.rates)
+			convertCurrency(
+				Number.parseFloat(mockDefaulState.userInput),
+				mockReduxAction.payload.rates
+			)
 		);
 	});
 
