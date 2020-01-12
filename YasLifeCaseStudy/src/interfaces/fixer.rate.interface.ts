@@ -1,3 +1,3 @@
 export interface Rate {
-	[key: string]: string;
+	[key: string]: number;
 }

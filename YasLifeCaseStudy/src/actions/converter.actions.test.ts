@@ -6,8 +6,6 @@ import {
 	fetchLatestRates,
 	FETCH_LATEST_RATES,
 	FETCH_LATEST_RATES_SUCCESS,
-	fetchLatestRateSuccess,
-	fetchLatestRateError,
 	FETCH_LATEST_RATES_ERROR,
 	convertCurrencySaga
 } from './converter.actions';
@@ -59,33 +57,6 @@ describe('Converter actions', () => {
 		it('should return action as expected', () => {
 			expect(fetchLatestRates()).toEqual({
 				type: FETCH_LATEST_RATES
-			});
-		});
-	});
-
-	describe('fetchLatestRateSuccess()', () => {
-		it('should be defined', () => {
-			expect(fetchLatestRateSuccess).toBeDefined();
-		});
-
-		it('should return action as expected', () => {
-			expect(fetchLatestRateSuccess()).toEqual({
-				type: FETCH_LATEST_RATES_SUCCESS
-			});
-		});
-	});
-
-	describe('fetchLatestRateError()', () => {
-		it('should be defined', () => {
-			expect(fetchLatestRateError).toBeDefined();
-		});
-
-		it('should return action as expected', () => {
-			const errorMessage = 'error';
-
-			expect(fetchLatestRateError(errorMessage)).toEqual({
-				type: FETCH_LATEST_RATES_ERROR,
-				payload: errorMessage
 			});
 		});
 	});

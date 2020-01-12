@@ -8,7 +8,7 @@
  * @format
  */
 
-import React from 'react';
+import React, { ReactElement } from 'react';
 import {
 	SafeAreaView,
 	StyleSheet,
@@ -19,7 +19,7 @@ import {
 	Button,
 	ActivityIndicator
 } from 'react-native';
-import { Currency } from 'src/interfaces/index';
+import { Currency, Rate, FixerLatest } from 'src/interfaces/index';
 import ConvertMessage from './components/ConvertMessage';
 import { currencies } from './config';
 import { connect } from 'react-redux';
@@ -29,7 +29,7 @@ import {
 	fetchLatestRates
 } from './actions/index';
 import LatestRatesFetchError from './components/LatestRatesFetchError';
-import { formatCurrency } from './util';
+import { formatCurrency } from './utils';
 import colors from './res/colors';
 
 const renderPickerItems = (items: Currency[]) => {
@@ -44,7 +44,10 @@ const renderPickerItems = (items: Currency[]) => {
 	});
 };
 
-const renderConvertButton = (isLoading: boolean, onPress: any) => {
+const renderConvertButton = (
+	isLoading: boolean,
+	onPress: any
+): ReactElement => {
 	if (isLoading) {
 		return (
 			<View style={styles.convertButtonWrapper}>

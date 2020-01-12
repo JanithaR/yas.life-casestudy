@@ -1,4 +1,4 @@
-import { ReduxAction } from '../interfaces/index';
+import { ReduxAction, ReduxState } from '../interfaces';
 import { currencies } from '../config';
 import {
 	CHANGE_DESIRED_CURRENCY,
@@ -6,10 +6,10 @@ import {
 	FETCH_LATEST_RATES,
 	FETCH_LATEST_RATES_SUCCESS,
 	FETCH_LATEST_RATES_ERROR
-} from '../actions/index';
+} from '../actions';
 import { convertCurrency } from '../utils';
 
-const defaulState = {
+const defaulState: ReduxState = {
 	userInput: 1,
 	desiredCurrency: currencies[1].code,
 	isFetchingLatestRates: false,
@@ -18,7 +18,10 @@ const defaulState = {
 	outputs: null
 };
 
-const converter = (state = defaulState, action: ReduxAction) => {
+const converter = (
+	state: ReduxState = defaulState,
+	action: ReduxAction
+): ReduxState => {
 	switch (action.type) {
 		case CHANGE_DESIRED_CURRENCY:
 			return {

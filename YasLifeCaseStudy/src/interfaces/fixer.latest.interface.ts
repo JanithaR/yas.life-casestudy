@@ -1,9 +1,9 @@
 import { Rate } from './fixer.rate.interface';
 
 export interface FixerLatest {
-	success: string;
+	success: boolean;
 	timestamp: number;
 	base: string;
 	date: string;
-	rates: Rate[];
+	rates: Rate;
 }
