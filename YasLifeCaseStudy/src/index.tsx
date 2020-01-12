@@ -35,15 +35,13 @@ import colors from './res/colors';
 import { ThemeProvider } from 'styled-components/native';
 
 const renderPickerItems = (items: Currency[]) => {
-	return items.map((item: Currency, index: number) => {
-		if (index !== 0) {
+	return items
+		.filter((item: Currency, index: number) => index !== 0)
+		.map((item: Currency) => {
 			return (
 				<Picker.Item label={item.label} value={item.code} key={item.code} />
 			);
-		}
-
-		return null;
-	});
+		});
 };
 
 const renderConvertButton = (
@@ -60,7 +58,7 @@ const renderConvertButton = (
 
 	return (
 		<View style={styles.convertButtonWrapper}>
-			<Button title="Convert" onPress={onPress} />
+			<Button title="Convert" onPress={onPress} color={colors.primaryColor} />
 		</View>
 	);
 };
@@ -165,7 +163,7 @@ const styles = StyleSheet.create({
 		marginRight: 5,
 		padding: 5
 	},
-	convertButtonWrapper: { height: 50 }
+	convertButtonWrapper: { height: 50, paddingLeft: 10, paddingRight: 10 }
 });
 
 const mapStateToProps = (state: any) => ({
