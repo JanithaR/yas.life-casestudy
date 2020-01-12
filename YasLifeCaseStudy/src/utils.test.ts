@@ -47,7 +47,7 @@ describe('Utils', () => {
 			${5000} | ${'THB'} | ${'THB 5,000.00'}
 			${5000} | ${'LKR'} | ${'LKR 5,000.00'}
 		`(
-			'should return formatted outputs',
+			'should return formatted output $expectedOutput',
 			({ amount, currency, expectedOutput }) => {
 				expect(formatCurrency(amount, currency)).toMatch(expectedOutput);
 			}
