@@ -166,8 +166,7 @@ const mapDispatchToProps = (dispatch: any) => ({
 	setUserInput: (value: string) =>
 		dispatch(changeUserInput(Number.parseFloat(value))),
 	setDesiredCurrency: (value: string) => dispatch(changeDesiredCurrency(value)),
-	onConvertPress: (currencyCode: string) =>
-		dispatch(fetchLatestRates(currencyCode))
+	onConvertPress: () => dispatch(fetchLatestRates())
 });
 
 // eslint-disable-next-line prettier/prettier

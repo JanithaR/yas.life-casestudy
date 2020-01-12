@@ -17,12 +17,11 @@ export const changeDesiredCurrency = (desiredCurrency: string) => ({
 	payload: desiredCurrency
 });
 
-export const fetchLatestRates = (currencyCode: string) => ({
-	type: FETCH_LATEST_RATES,
-	payload: currencyCode
+export const fetchLatestRates = () => ({
+	type: FETCH_LATEST_RATES
 });
 
-export function* convertCurrency() {
+export function* convertCurrencySaga() {
 	try {
 		const response = yield call(
 			makeRequest,
