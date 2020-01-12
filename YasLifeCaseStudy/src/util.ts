@@ -1,4 +1,4 @@
-import { Rate } from './interfaces/fixer.rate.interface';
+import { Rate } from './interfaces/index';
 
 export const convertCurrency = (amount: number, rates: Rate[]) => {
 	let output: Object = {};
