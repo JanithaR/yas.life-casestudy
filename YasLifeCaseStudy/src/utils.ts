@@ -15,6 +15,7 @@ export const convertCurrency = (amount: number, rates: Rate): Rate => {
 };
 
 export const formatCurrency = (amount: number, currency: string): string => {
+	// eslint-disable-next-line no-undef
 	return new Intl.NumberFormat('en-US', {
 		style: 'currency',
 		currency,
