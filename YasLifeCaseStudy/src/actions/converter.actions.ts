@@ -20,7 +20,7 @@ export const fetchLatestRates = (): ReduxAction => ({
 	type: FETCH_LATEST_RATES
 });
 
-export function* convertCurrencySaga() {
+export function* fetchLatestRatesGenerator() {
 	const symbols: string = getCurrencySymbols(currencies);
 
 	try {

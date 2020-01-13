@@ -7,7 +7,7 @@ import {
 	FETCH_LATEST_RATES,
 	FETCH_LATEST_RATES_SUCCESS,
 	FETCH_LATEST_RATES_ERROR,
-	convertCurrencySaga
+	fetchLatestRatesGenerator
 } from './converter.actions';
 
 describe('Converter actions', () => {
@@ -25,7 +25,7 @@ describe('Converter actions', () => {
 		});
 
 		it('should return action as expected', () => {
-			const input: number = 0;
+			const input: string = '0';
 
 			expect(changeUserInput(input)).toEqual({
 				type: CHANGE_USER_INPUT,
@@ -61,9 +61,9 @@ describe('Converter actions', () => {
 		});
 	});
 
-	describe('convertCurrencySaga()', () => {
+	describe('fetchLatestRatesGenerator()', () => {
 		it('should be defined', () => {
-			expect(convertCurrencySaga).toBeDefined();
+			expect(fetchLatestRatesGenerator).toBeDefined();
 		});
 	});
 });
