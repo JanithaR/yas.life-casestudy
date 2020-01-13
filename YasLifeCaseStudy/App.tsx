@@ -15,13 +15,12 @@ import CurrencyConverter from './src/index';
 import Storybook from './storybook';
 
 const App = () => {
-	/* return (
+	return (
 		<Provider store={store}>
 			<CurrencyConverter />
 		</Provider>
-	); */
-
-	return <Storybook />;
+	);
 };
 
 export default App;
+// export default Storybook;
