@@ -19,3 +19,6 @@ Design inspiration - https://dribbble.com/shots/6839064-Daily-UI-004-Currency-co
 
 ![iOS screen](https://i.imgur.com/M0eWDDP.png)
 ![Android screen](https://imgur.com/3Mq8qVh.png)
+
+To add new currencies,
+Update `config.ts` with the desired Currency. For example, `{ label: 'Australia', code: 'AUD' }`
