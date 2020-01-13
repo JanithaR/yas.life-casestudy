@@ -9,9 +9,9 @@ import {
 	FETCH_LATEST_RATES_ERROR,
 	fetchLatestRatesGenerator
 } from './converter.actions';
-import { makeRequest } from '../api';
 import { baseApiUrl, latestEndpoint, fixerKey, currencies } from '../config';
 import { getCurrencySymbols } from '../utils';
+import { makeRequest } from '../api';
 
 describe('Converter actions', () => {
 	it('should define action types', () => {
@@ -65,15 +65,13 @@ describe('Converter actions', () => {
 	});
 
 	describe('fetchLatestRatesGenerator()', () => {
-		beforeAll(() => {
-			jest.mock('../api.ts');
-		});
-
 		it('should be defined', () => {
 			expect(fetchLatestRatesGenerator).toBeDefined();
 		});
 
 		it('should fetch latest rates and dispatch an action', () => {
+			jest.mock('../api');
+
 			const generator = fetchLatestRatesGenerator();
 
 			let next = generator.next();
