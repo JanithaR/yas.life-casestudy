@@ -6,11 +6,13 @@
 function loadStories() {
 	require('../src/components/FromText.stories');
 	require('../src/components/StatusText.stories');
+	require('../src/components/ToText.stories');
 }
 
 const stories = [
 	'../src/components/FromText.stories',
-	'../src/components/StatusText.stories'
+	'../src/components/StatusText.stories',
+	'../src/components/ToText.stories'
 ];
 
 module.exports = {

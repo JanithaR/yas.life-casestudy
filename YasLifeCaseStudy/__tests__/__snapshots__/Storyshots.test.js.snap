@@ -24,3 +24,16 @@ exports[`Storyshots StatusText default 1`] = `
   Fetching latest rates...
 </Text>
 `;
+
+exports[`Storyshots ToText default 1`] = `
+<Text
+  style={
+    Object {
+      "color": "rgb(95, 80, 181)",
+      "fontSize": 36,
+    }
+  }
+>
+  DKK 100,000
+</Text>
+`;
