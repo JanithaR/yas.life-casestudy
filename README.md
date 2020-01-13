@@ -15,5 +15,7 @@ To test UI elements with Storybook,
 3. `npm run start`
 4. Run or refresh the app
 
+Design inspiration - https://dribbble.com/shots/6839064-Daily-UI-004-Currency-converter-app/attachments and https://www.xe.com/
+
 ![iOS screen](https://i.imgur.com/M0eWDDP.png)
 ![Android screen](https://imgur.com/3Mq8qVh.png)
