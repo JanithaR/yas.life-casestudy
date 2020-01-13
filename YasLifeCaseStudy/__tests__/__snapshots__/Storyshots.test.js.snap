@@ -12,3 +12,15 @@ exports[`Storyshots FromText default 1`] = `
   EUR 1,000 = 
 </Text>
 `;
+
+exports[`Storyshots StatusText default 1`] = `
+<Text
+  style={
+    Object {
+      "fontSize": 12,
+    }
+  }
+>
+  Fetching latest rates...
+</Text>
+`;
