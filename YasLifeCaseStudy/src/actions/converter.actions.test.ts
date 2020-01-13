@@ -9,6 +9,9 @@ import {
 	FETCH_LATEST_RATES_ERROR,
 	fetchLatestRatesGenerator
 } from './converter.actions';
+import { makeRequest } from '../api';
+import { baseApiUrl, latestEndpoint, fixerKey, currencies } from '../config';
+import { getCurrencySymbols } from '../utils';
 
 describe('Converter actions', () => {
 	it('should define action types', () => {
@@ -62,16 +65,29 @@ describe('Converter actions', () => {
 	});
 
 	describe('fetchLatestRatesGenerator()', () => {
+		beforeAll(() => {
+			jest.mock('../api.ts');
+		});
+
 		it('should be defined', () => {
 			expect(fetchLatestRatesGenerator).toBeDefined();
 		});
 
-		it('should dispatch an action', () => {
-			beforeAll(() => {
-				jest.mock('../api.ts');
-			});
+		it('should fetch latest rates and dispatch an action', () => {
+			const generator = fetchLatestRatesGenerator();
 
-			expect(fetchLatestRatesGenerator().next().value).toEqual({
+			let next = generator.next();
+			expect(next.value.type).toEqual('CALL');
+			expect(next.value.payload.fn).toEqual(makeRequest);
+			expect(next.value.payload.args[0]).toEqual(
+				`${baseApiUrl}${latestEndpoint}?access_key=${fixerKey}&symbols=${getCurrencySymbols(
+					currencies
+				)}`
+			);
+
+			next = generator.next();
+			expect(next.value.type).toEqual('PUT');
+			expect(next.value.payload.action).toEqual({
 				type: FETCH_LATEST_RATES_SUCCESS,
 				payload: {
 					success: true,
