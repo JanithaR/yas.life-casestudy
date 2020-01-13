@@ -1,0 +1,14 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Storyshots FromText default 1`] = `
+<Text
+  style={
+    Object {
+      "color": "rgba(95, 80, 181, 0.8)",
+      "fontSize": 24,
+    }
+  }
+>
+  EUR 1,000 = 
+</Text>
+`;

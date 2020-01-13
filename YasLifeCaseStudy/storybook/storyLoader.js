@@ -7,9 +7,11 @@ function loadStories() {
 	require('../src/components/FromText.stories');
 }
 
-const stories = ['../src/components/FromText.stories'];
+const stories = [
+	'../src/components/FromText.stories'
+];
 
 module.exports = {
-	loadStories,
-	stories
+  loadStories,
+  stories,
 };
