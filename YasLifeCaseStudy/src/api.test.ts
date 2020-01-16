@@ -4,7 +4,7 @@ jest.mock('./api');
 
 describe('api', () => {
 	it('should resolve to', () => {
-		expect(makeRequest('dummy_url')).toStrictEqual({
+		expect(makeRequest('useless_url')).toStrictEqual({
 			success: true,
 			timestamp: 1578884105,
 			base: 'EUR',
