@@ -1,7 +1,7 @@
 export const makeRequest = () => {
-	console.log('MOCKING MAKE REQUEST');
+	console.log('### mocking make request ###');
 
-	return Promise.resolve({
+	return {
 		success: true,
 		timestamp: 1578884105,
 		base: 'EUR',
@@ -13,5 +13,5 @@ export const makeRequest = () => {
 			THB: 33.547923,
 			LKR: 201.214097
 		}
-	});
+	};
 };
