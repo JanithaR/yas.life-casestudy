@@ -22,3 +22,6 @@ Design inspiration - https://dribbble.com/shots/6839064-Daily-UI-004-Currency-co
 
 To add new currencies,
 Update `config.ts` with the desired Currency. For example, `{ label: 'Australia', code: 'AUD' }`
+
+Convert endpoint could not be used because free account plan doesn't allow for it to be used
+![convert](https://i.imgur.com/mUXoXmX.png)
