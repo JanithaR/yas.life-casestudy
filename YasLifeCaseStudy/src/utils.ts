@@ -1,6 +1,10 @@
 import { Rate, Currency } from './interfaces';
+import { currencies } from './config';
 
-export const convertCurrency = (amount: number, rates: Rate): Rate => {
+export const convertCurrency = (
+	amount: number = 0,
+	rates: Rate[] = []
+): Rate => {
 	let output: Rate = {};
 
 	const ratesArray: string[] = Object.keys(rates);
@@ -14,20 +18,25 @@ export const convertCurrency = (amount: number, rates: Rate): Rate => {
 	return output;
 };
 
-export const formatCurrency = (amount: number, currency: string): string => {
+export const formatCurrency = (
+	amount: number = 0,
+	currency: string = currencies[0].code
+): string => {
 	// eslint-disable-next-line no-undef
 	return new Intl.NumberFormat('en-US', {
 		style: 'currency',
 		currency,
 		maximumFractionDigits: 2
-	}).format(amount);
+	})
+		.format(amount)
+		.toString();
 };
 
-export const getCurrencySymbols = (currencies: Currency[]): string => {
+export const getCurrencyCodes = (currncies: Currency[]): string => {
 	let output = '';
 
-	for (let i = 0; i < currencies.length; i++) {
-		const currency: Currency = currencies[i];
+	for (let i = 0; i < currncies.length; i++) {
+		const currency: Currency = currncies[i];
 
 		output = `${output}${currency.code},`;
 	}

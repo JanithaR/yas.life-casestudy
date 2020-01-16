@@ -10,7 +10,7 @@ import {
 	fetchLatestRatesGenerator
 } from './converter.actions';
 import { baseApiUrl, latestEndpoint, fixerKey, currencies } from '../config';
-import { getCurrencySymbols } from '../utils';
+import { getCurrencyCodes } from '../utils';
 import { makeRequest } from '../api';
 
 describe('Converter actions', () => {
@@ -78,7 +78,7 @@ describe('Converter actions', () => {
 			expect(next.value.type).toEqual('CALL');
 			expect(next.value.payload.fn).toEqual(makeRequest);
 			expect(next.value.payload.args[0]).toEqual(
-				`${baseApiUrl}${latestEndpoint}?access_key=${fixerKey}&symbols=${getCurrencySymbols(
+				`${baseApiUrl}${latestEndpoint}?access_key=${fixerKey}&symbols=${getCurrencyCodes(
 					currencies
 				)}`
 			);

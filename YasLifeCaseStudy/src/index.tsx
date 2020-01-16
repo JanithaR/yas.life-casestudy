@@ -32,6 +32,7 @@ import {
 import { formatCurrency } from './utils';
 import colors from './res/colors';
 import { ThemeProvider } from 'styled-components/native';
+import { VALUE_INPUT, CONVERT_BUTTON } from './testIDs';
 
 const renderPickerItems = (items: Currency[]) => {
 	return items
@@ -57,7 +58,12 @@ const renderConvertButton = (
 
 	return (
 		<View style={styles.convertButtonWrapper}>
-			<Button title="Convert" onPress={onPress} color={colors.primaryColor} />
+			<Button
+				testID={CONVERT_BUTTON}
+				title="Convert"
+				onPress={onPress}
+				color={colors.primaryColor}
+			/>
 		</View>
 	);
 };
@@ -91,6 +97,7 @@ const CurrencyConverter = (props: any) => {
 							autoCompleteType="off"
 							autoCorrect={false}
 							keyboardType="decimal-pad"
+							testID={VALUE_INPUT}
 						/>
 						<Picker
 							selectedValue={desiredCurrency}

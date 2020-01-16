@@ -8,6 +8,7 @@ exports[`Storyshots FromText default 1`] = `
       "fontSize": 24,
     }
   }
+  testID="fromText"
 >
   EUR 1,000 = 
 </Text>
@@ -33,6 +34,7 @@ exports[`Storyshots ToText default 1`] = `
       "fontSize": 36,
     }
   }
+  testID="toText"
 >
   DKK 100,000
 </Text>

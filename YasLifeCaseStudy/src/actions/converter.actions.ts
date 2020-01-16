@@ -2,7 +2,7 @@ import { call, put } from 'redux-saga/effects';
 import { makeRequest } from '../api';
 import { baseApiUrl, latestEndpoint, fixerKey, currencies } from '../config';
 import { FixerLatest, ReduxAction } from 'src/interfaces';
-import { getCurrencySymbols } from '../utils';
+import { getCurrencyCodes } from '../utils';
 
 export const changeUserInput = (input: string): ReduxAction => ({
 	type: CHANGE_USER_INPUT,
@@ -21,7 +21,7 @@ export const fetchLatestRates = (): ReduxAction => ({
 });
 
 export function* fetchLatestRatesGenerator() {
-	const symbols: string = getCurrencySymbols(currencies);
+	const symbols: string = getCurrencyCodes(currencies);
 
 	try {
 		const response: FixerLatest = yield call(

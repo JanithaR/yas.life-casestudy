@@ -1,4 +1,4 @@
-import { convertCurrency, formatCurrency, getCurrencySymbols } from './utils';
+import { convertCurrency, formatCurrency, getCurrencyCodes } from './utils';
 import { Rate, Currency } from './interfaces';
 
 describe('Utils', () => {
@@ -36,16 +36,16 @@ describe('Utils', () => {
 
 		it.each`
 			amount  | currency | expectedOutput
-			${5}    | ${'DKK'} | ${'DKK 5.00'}
+			${5}    | ${'DKK'} | ${'DKK\xa05.00'}
 			${5}    | ${'INR'} | ${'₹5.00'}
 			${5}    | ${'USD'} | ${'$5.00'}
-			${5}    | ${'THB'} | ${'THB 5.00'}
-			${5}    | ${'LKR'} | ${'LKR 5.00'}
-			${5000} | ${'DKK'} | ${'DKK 5,000.00'}
+			${5}    | ${'THB'} | ${'THB\xa05.00'}
+			${5}    | ${'LKR'} | ${'LKR\xa05.00'}
+			${5000} | ${'DKK'} | ${'DKK\xa05,000.00'}
 			${5000} | ${'INR'} | ${'₹5,000.00'}
 			${5000} | ${'USD'} | ${'$5,000.00'}
-			${5000} | ${'THB'} | ${'THB 5,000.00'}
-			${5000} | ${'LKR'} | ${'LKR 5,000.00'}
+			${5000} | ${'THB'} | ${'THB\xa05,000.00'}
+			${5000} | ${'LKR'} | ${'LKR\xa05,000.00'}
 		`(
 			'should return formatted output $expectedOutput',
 			({ amount, currency, expectedOutput }) => {
@@ -56,7 +56,7 @@ describe('Utils', () => {
 
 	describe('getCurrencySymbols()', () => {
 		it('snould be defined', () => {
-			expect(getCurrencySymbols).toBeDefined();
+			expect(getCurrencyCodes).toBeDefined();
 		});
 
 		it('should return an array of currency codes', () => {
@@ -69,7 +69,7 @@ describe('Utils', () => {
 				{ label: 'Sri Lanka', code: 'LKR' }
 			];
 
-			expect(getCurrencySymbols(mockCurrencies)).toMatch(
+			expect(getCurrencyCodes(mockCurrencies)).toMatch(
 				'EUR,DKK,INR,USD,THB,LKR'
 			);
 		});
