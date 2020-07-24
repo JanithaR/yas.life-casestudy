@@ -11,6 +11,7 @@
         "pre-push-check": "prettier --check src/ && eslint src/** && yarn test"
     },
     "dependencies": {
+        "@react-native-community/picker": "^1.6.5",
         "react": "16.13.1",
         "react-native": "0.63.0"
     },
