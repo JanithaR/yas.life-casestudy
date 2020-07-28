@@ -8,71 +8,157 @@
  * @format
  */
 
-import React from 'react';
+import React, { ReactElement } from 'react';
 import {
     SafeAreaView,
     StyleSheet,
     ScrollView,
+    StatusBar,
+    TextInput,
+    Button,
     View,
     Text,
-    StatusBar,
+    ActivityIndicator,
 } from 'react-native';
 
-import {
-    Header,
-    LearnMoreLinks,
-    Colors,
-    DebugInstructions,
-    ReloadInstructions,
-} from 'react-native/Libraries/NewAppScreen';
+import { Picker } from '@react-native-community/picker';
 
-declare const global: {HermesInternal: null | {}};
+import strings from 'src/strings';
+import colors from 'src/colors';
+import testIds from 'src/testIds';
+import { formatCurrency, convertCurrency } from 'src/utils';
+import { currencies } from 'src/config';
+import { callApi, composeLatestEndpointUrl } from 'src/api';
+import { FixerLatest } from './interfaces/FixerLatest';
+import { Rate } from './interfaces/FixerRate';
+
+declare const global: { HermesInternal: null | {} };
 
 const App = () => {
+    const [currency, setCurrency] = React.useState<string>(currencies[1].code);
+    const [input, setInput] = React.useState<number>(1);
+    const [rates, setRates] = React.useState<Rate>({});
+    const [loading, setLoading] = React.useState<boolean>(false);
+
+    function onCurrencyChange(value: string | number): void {
+        let validatedCurrency: string;
+
+        if (typeof value === 'number') {
+            validatedCurrency = value.toString();
+        } else {
+            validatedCurrency = value;
+        }
+
+        setCurrency(validatedCurrency);
+    }
+
+    function onConvertPress(): void {
+        setLoading(true);
+
+        callApi(composeLatestEndpointUrl()).then((data: FixerLatest) => {
+            setLoading(false);
+            setRates(data.rates);
+        });
+    }
+
+    function onInputChange(value: string): void {
+        const parsedFloat: number = parseFloat(value);
+
+        if (!isNaN(parsedFloat)) {
+            setInput(parsedFloat);
+        } else {
+            setInput(0);
+        }
+    }
+
+    function getConversionRate(curr: string): Rate['key'] {
+        return rates[curr];
+    }
+
+    function renderConversion(): ReactElement | null {
+        return Object.keys(rates).length > 0 ? (
+            <Text style={styles.outputText}>
+                {formatCurrency(
+                    convertCurrency(input, getConversionRate(currency)),
+                    currency,
+                )}
+            </Text>
+        ) : null;
+    }
+
+    function renderPickerItems(): ReactElement[] {
+        return currencies
+            .filter((curr, index) => index !== 0)
+            .map((curr) => (
+                <Picker.Item
+                    label={curr.label}
+                    value={curr.code}
+                    key={curr.code}
+                />
+            ));
+    }
+
+    function renderConvertButton(): ReactElement {
+        return loading ? (
+            <ActivityIndicator
+                size="large"
+                color={colors.primary}
+                testID={testIds.activityIndicator}
+            />
+        ) : (
+            <Button
+                title={strings.convert}
+                onPress={onConvertPress}
+                color={colors.primary}
+            />
+        );
+    }
+
+    function renderInstructions(): ReactElement | null {
+        return !loading && Object.keys(rates).length === 0 ? (
+            <Text>{strings.clickConvert}</Text>
+        ) : null;
+    }
+
     return (
         <>
-            <StatusBar barStyle="dark-content" />
-            <SafeAreaView>
+            <StatusBar barStyle="light-content" />
+            <SafeAreaView style={styles.safeArea}>
                 <ScrollView
                     contentInsetAdjustmentBehavior="automatic"
                     style={styles.scrollView}>
-                    <Header />
-                    {global.HermesInternal == null ? null : (
-                        <View style={styles.engine}>
-                            <Text style={styles.footer}>Engine: Hermes</Text>
+                    <View style={styles.sectionWrapper}>
+                        <TextInput
+                            value={input > 0 ? input.toString() : ''}
+                            onChangeText={onInputChange}
+                            keyboardType="decimal-pad"
+                            selectTextOnFocus
+                            style={styles.input}
+                            placeholder={strings.inputPlaceholder}
+                        />
+                        <Picker
+                            testID={testIds.picker}
+                            selectedValue={currency}
+                            onValueChange={onCurrencyChange}
+                            itemStyle={styles.picker}>
+                            {renderPickerItems()}
+                        </Picker>
+                        <View style={styles.buttonWrapper}>
+                            {renderConvertButton()}
                         </View>
-                    )}
-                    <View style={styles.body}>
-                        <View style={styles.sectionContainer}>
-                            <Text style={styles.sectionTitle}>Step One</Text>
-                            <Text style={styles.sectionDescription}>
-                                Edit{' '}
-                                <Text style={styles.highlight}>App.tsx</Text> to
-                                change this screen and then come back to see
-                                your edits.
-                            </Text>
-                        </View>
-                        <View style={styles.sectionContainer}>
-                            <Text style={styles.sectionTitle}>
-                                See Your Changes
-                            </Text>
-                            <Text style={styles.sectionDescription}>
-                                <ReloadInstructions />
-                            </Text>
-                        </View>
-                        <View style={styles.sectionContainer}>
-                            <Text style={styles.sectionTitle}>Debug</Text>
-                            <Text style={styles.sectionDescription}>
-                                <DebugInstructions />
-                            </Text>
-                        </View>
-                        <View style={styles.sectionContainer}>
-                            <Text style={styles.sectionTitle}>Learn More</Text>
-                            <Text style={styles.sectionDescription}>
-                                Read the docs to discover what to do next:
-                            </Text>
-                        </View>
-                        <LearnMoreLinks />
+                    </View>
+                    <View
+                        style={StyleSheet.flatten([
+                            styles.sectionWrapper,
+                            styles.outputWrapper,
+                        ])}>
+                        <Text style={styles.inputText}>
+                            {formatCurrency(input)} =
+                        </Text>
+
+                        {renderConversion()}
+
+                        {renderInstructions()}
                     </View>
                 </ScrollView>
             </SafeAreaView>
@@ -82,40 +168,40 @@ const App = () => {
 
 const styles = StyleSheet.create({
     scrollView: {
-        backgroundColor: Colors.lighter,
+        backgroundColor: colors.background,
+        padding: 20,
     },
-    engine: {
-        position: 'absolute',
-        right: 0,
+    sectionWrapper: {
+        backgroundColor: 'white',
+        borderRadius: 10,
+        padding: 10,
     },
-    body: {
-        backgroundColor: Colors.white,
+    input: {
+        borderRadius: 10,
+        borderColor: colors.background,
+        borderWidth: 1,
+        fontSize: 36,
     },
-    sectionContainer: {
-        marginTop: 32,
-        paddingHorizontal: 24,
+    safeArea: {
+        flex: 1,
     },
-    sectionTitle: {
-        fontSize: 24,
-        fontWeight: '600',
-        color: Colors.black,
+    outputWrapper: {
+        marginTop: 10,
+        alignItems: 'center',
     },
-    sectionDescription: {
-        marginTop: 8,
-        fontSize: 18,
-        fontWeight: '400',
-        color: Colors.dark,
+    picker: {
+        fontSize: 26,
     },
-    highlight: {
-        fontWeight: '700',
+    inputText: {
+        color: colors.primary,
+        fontSize: 36,
     },
-    footer: {
-        color: Colors.dark,
-        fontSize: 12,
-        fontWeight: '600',
-        padding: 4,
-        paddingRight: 12,
-        textAlign: 'right',
+    buttonWrapper: {
+        marginTop: 10,
+    },
+    outputText: {
+        color: colors.primary,
+        fontSize: 56,
     },
 });
 
