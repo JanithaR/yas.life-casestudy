@@ -29,8 +29,7 @@ import testIds from 'src/testIds';
 import { formatCurrency, convertCurrency } from 'src/utils';
 import { currencies } from 'src/config';
 import { callApi, composeLatestEndpointUrl } from 'src/api';
-import { FixerLatest } from './interfaces/FixerLatest';
-import { Rate } from './interfaces/FixerRate';
+import { FixerLatest, Rate } from 'src/interfaces';
 
 declare const global: { HermesInternal: null | {} };
 
