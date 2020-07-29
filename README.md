@@ -2,14 +2,14 @@
 
 To get started,
 1. Clone this repo
-2. `cd YasLifeCaseStudy`
-3. `npm install`
-4. `npm run android` or `npm run ios`
+2. `cd YasLifeCaseStudy` or `cd YasLifeCaseStudy_0_63_2`
+3. `npm install` or `yarn install`
+4. `npm run android` or `npm run ios` or `yarn android` or `yarn ios`
 
 To run unit tests,
-`npm run test`
+`npm run test` or `yarn test`
 
-To test UI elements with Storybook,
+To test UI elements with Storybook, (not applicable to YasLifeCaseStudy_0_63_2)
 1. In `App.tsx` comment `export default App;` and uncomment `export default Storybook;`
 2. `npm run storybook`
 3. `npm run start`
