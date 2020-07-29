@@ -25,3 +25,6 @@ Update `config.ts` with the desired Currency. For example, `{ label: 'Australia'
 
 Convert endpoint could not be used because free account plan doesn't allow for it to be used
 ![convert](https://i.imgur.com/mUXoXmX.png)
+
+# What is YasLifeCaseStudy_0_63_2?
+It is and upgrade to the now outdated/overkill solution in YasLifeCaseStudy. It was written completely using TDD so that can be used as a usecase for studying TDD.
