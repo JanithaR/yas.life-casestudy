@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`App screen should render styles as expected 1`] = `
+exports[`App screen should render as expected 1`] = `
 <RCTSafeAreaView
   emulateUnlessSupported={true}
   style={
@@ -51,6 +51,11 @@ exports[`App screen should render styles as expected 1`] = `
             items={
               Array [
                 Object {
+                  "label": "Sri Lanka",
+                  "textColor": undefined,
+                  "value": "LKR",
+                },
+                Object {
                   "label": "Danmark",
                   "textColor": undefined,
                   "value": "DKK",
@@ -69,11 +74,6 @@ exports[`App screen should render styles as expected 1`] = `
                   "label": "Thailand",
                   "textColor": undefined,
                   "value": "THB",
-                },
-                Object {
-                  "label": "Sri Lanka",
-                  "textColor": undefined,
-                  "value": "LKR",
                 },
               ]
             }

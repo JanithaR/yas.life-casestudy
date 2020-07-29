@@ -1,5 +1,5 @@
 import { Currency } from 'src/interfaces';
-import { currencies } from 'src/config';
+import { currencies, baseApiUrl, latestEndpoint, fixerKey } from 'src/config';
 
 export function formatCurrency(
     value: number,
@@ -29,3 +29,7 @@ export const getCommaSeparatedCurrencyCodes = (): string => {
 
     return output;
 };
+
+export function composeLatestEndpointUrl(): string {
+    return `${baseApiUrl}${latestEndpoint}?access_key=${fixerKey}&symbols=${getCommaSeparatedCurrencyCodes()}`;
+}

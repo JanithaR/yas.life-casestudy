@@ -26,9 +26,13 @@ import { Picker } from '@react-native-community/picker';
 import strings from 'src/strings';
 import colors from 'src/colors';
 import testIds from 'src/testIds';
-import { formatCurrency, convertCurrency } from 'src/utils';
+import {
+    formatCurrency,
+    convertCurrency,
+    composeLatestEndpointUrl,
+} from 'src/utils';
 import { currencies } from 'src/config';
-import { callApi, composeLatestEndpointUrl } from 'src/api';
+import { callApi } from 'src/api';
 import { FixerLatest, Rate } from 'src/interfaces';
 
 declare const global: { HermesInternal: null | {} };

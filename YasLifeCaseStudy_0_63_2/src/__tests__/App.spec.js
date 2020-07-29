@@ -9,9 +9,13 @@ import {
 import App from 'src/App';
 import strings from 'src/strings';
 import testIds from 'src/testIds';
-import { convertCurrency, formatCurrency } from 'src/utils';
-import { currencies } from 'src/config';
-import { callApi, composeLatestEndpointUrl } from 'src/api';
+import {
+    convertCurrency,
+    formatCurrency,
+    getCommaSeparatedCurrencyCodes,
+} from 'src/utils';
+import { currencies, baseApiUrl, latestEndpoint, fixerKey } from 'src/config';
+import { callApi } from 'src/api';
 
 jest.mock('src/api', () => ({
     callApi: jest.fn(() =>
@@ -29,7 +33,6 @@ jest.mock('src/api', () => ({
             timestamp: 1595851446,
         }),
     ),
-    composeLatestEndpointUrl: jest.fn(),
 }));
 
 function setup(): RenderAPI {
@@ -37,7 +40,7 @@ function setup(): RenderAPI {
 }
 
 describe('App screen', () => {
-    it('should render styles as expected', () => {
+    it('should render as expected', () => {
         const { toJSON } = setup();
 
         expect(toJSON()).toMatchSnapshot();
@@ -111,12 +114,12 @@ describe('App screen', () => {
         it('should call callApi() from api utils when pressed', () => {
             const { queryByA11yRole } = setup();
 
-            composeLatestEndpointUrl.mockReturnValueOnce('fake_url');
-
             fireEvent(queryByA11yRole('button'), 'onPress');
 
             expect(callApi).toHaveBeenCalledTimes(1);
-            expect(callApi).toHaveBeenCalledWith('fake_url');
+            expect(callApi).toHaveBeenCalledWith(
+                `${baseApiUrl}${latestEndpoint}?access_key=${fixerKey}&symbols=${getCommaSeparatedCurrencyCodes()}`,
+            );
         });
 
         it('should not be rendered when fetching rates, instead an activity indicator should be rendered', async () => {
@@ -182,9 +185,14 @@ describe('App screen', () => {
 
             await waitFor(() => getByA11yRole('button'));
 
+            const apiResult: FixerLatest = await callApi();
+
             expect(
                 queryByText(
-                    formatCurrency(convertCurrency(1, 7.443104), 'DKK'),
+                    formatCurrency(
+                        convertCurrency(1, apiResult.rates[currencies[1].code]),
+                        currencies[1].code,
+                    ),
                 ),
             ).toBeTruthy();
         });
@@ -196,19 +204,35 @@ describe('App screen', () => {
 
             await waitFor(() => getByA11yRole('button'));
 
-            fireEvent(getByTestId(testIds.picker), 'onValueChange', 'LKR');
+            fireEvent(
+                getByTestId(testIds.picker),
+                'onValueChange',
+                currencies[2].code,
+            );
+
+            const apiResult: FixerLatest = await callApi();
 
             expect(
                 queryByText(
-                    formatCurrency(convertCurrency(1, 218.134047), 'LKR'),
+                    formatCurrency(
+                        convertCurrency(1, apiResult.rates[currencies[2].code]),
+                        currencies[2].code,
+                    ),
                 ),
             ).toBeTruthy();
 
-            fireEvent(getByTestId(testIds.picker), 'onValueChange', 'USD');
+            fireEvent(
+                getByTestId(testIds.picker),
+                'onValueChange',
+                currencies[3].code,
+            );
 
             expect(
                 queryByText(
-                    formatCurrency(convertCurrency(1, 1.174102), 'USD'),
+                    formatCurrency(
+                        convertCurrency(1, apiResult.rates[currencies[3].code]),
+                        currencies[3].code,
+                    ),
                 ),
             ).toBeTruthy();
         });
@@ -222,9 +246,17 @@ describe('App screen', () => {
 
             fireEvent(getByDisplayValue('1'), 'onChangeText', '563');
 
+            const apiResult: FixerLatest = await callApi();
+
             expect(
                 queryByText(
-                    formatCurrency(convertCurrency(563, 7.443104), 'DKK'),
+                    formatCurrency(
+                        convertCurrency(
+                            563,
+                            apiResult.rates[currencies[1].code],
+                        ),
+                        currencies[1].code,
+                    ),
                 ),
             ).toBeTruthy();
 
@@ -232,7 +264,13 @@ describe('App screen', () => {
 
             expect(
                 queryByText(
-                    formatCurrency(convertCurrency(463, 7.443104), 'DKK'),
+                    formatCurrency(
+                        convertCurrency(
+                            463,
+                            apiResult.rates[currencies[1].code],
+                        ),
+                        currencies[1].code,
+                    ),
                 ),
             ).toBeTruthy();
         });

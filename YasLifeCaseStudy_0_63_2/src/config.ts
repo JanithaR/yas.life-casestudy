@@ -5,9 +5,9 @@ export const baseApiUrl: string = 'http://data.fixer.io/api/';
 export const latestEndpoint: string = 'latest';
 export const currencies: Currency[] = [
     { label: 'Euro', code: 'EUR' },
+    { label: 'Sri Lanka', code: 'LKR' },
     { label: 'Danmark', code: 'DKK' },
     { label: 'India', code: 'INR' },
     { label: 'US', code: 'USD' },
     { label: 'Thailand', code: 'THB' },
-    { label: 'Sri Lanka', code: 'LKR' },
 ];
