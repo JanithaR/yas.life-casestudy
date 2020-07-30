@@ -39,7 +39,7 @@ declare const global: { HermesInternal: null | {} };
 
 const App = () => {
     const [currency, setCurrency] = React.useState<string>(currencies[1].code);
-    const [input, setInput] = React.useState<number>(1);
+    const [input, setInput] = React.useState<string>('1');
     const [rates, setRates] = React.useState<Rate>({});
     const [loading, setLoading] = React.useState<boolean>(false);
 
@@ -65,28 +65,29 @@ const App = () => {
     }
 
     function onInputChange(value: string): void {
-        const parsedFloat: number = parseFloat(value);
-
-        if (!isNaN(parsedFloat)) {
-            setInput(parsedFloat);
-        } else {
-            setInput(0);
-        }
+        setInput(value);
     }
 
     function getConversionRate(curr: string): Rate['key'] {
         return rates[curr];
     }
 
-    function renderConversion(): ReactElement | null {
-        return Object.keys(rates).length > 0 ? (
-            <Text style={styles.outputText}>
-                {formatCurrency(
-                    convertCurrency(input, getConversionRate(currency)),
-                    currency,
-                )}
-            </Text>
-        ) : null;
+    function renderOutput(): ReactElement | null {
+        if (!isNaN(Number.parseFloat(input)) && Object.keys(rates).length > 0) {
+            return (
+                <Text style={styles.outputText}>
+                    {formatCurrency(
+                        convertCurrency(
+                            Number.parseFloat(input),
+                            getConversionRate(currency),
+                        ),
+                        currency,
+                    )}
+                </Text>
+            );
+        }
+
+        return null;
     }
 
     function renderPickerItems(): ReactElement[] {
@@ -118,9 +119,27 @@ const App = () => {
     }
 
     function renderInstructions(): ReactElement | null {
-        return !loading && Object.keys(rates).length === 0 ? (
-            <Text>{strings.clickConvert}</Text>
-        ) : null;
+        if (isNaN(Number.parseFloat(input))) {
+            return <Text>{strings.invalidInput}</Text>;
+        }
+
+        if (Object.keys(rates).length === 0) {
+            return <Text>{strings.clickConvert}</Text>;
+        }
+
+        return null;
+    }
+
+    function renderInput(): ReactElement | null {
+        if (!isNaN(Number.parseFloat(input))) {
+            return (
+                <Text style={styles.inputText}>
+                    {formatCurrency(Number.parseFloat(input))} =
+                </Text>
+            );
+        }
+
+        return null;
     }
 
     return (
@@ -132,7 +151,11 @@ const App = () => {
                     style={styles.scrollView}>
                     <View style={styles.sectionWrapper}>
                         <TextInput
-                            value={input > 0 ? input.toString() : ''}
+                            value={
+                                Number.parseFloat(input) > 0
+                                    ? input.toString()
+                                    : ''
+                            }
                             onChangeText={onInputChange}
                             keyboardType="decimal-pad"
                             selectTextOnFocus
@@ -155,11 +178,9 @@ const App = () => {
                             styles.sectionWrapper,
                             styles.outputWrapper,
                         ])}>
-                        <Text style={styles.inputText}>
-                            {formatCurrency(input)} =
-                        </Text>
+                        {renderInput()}
 
-                        {renderConversion()}
+                        {renderOutput()}
 
                         {renderInstructions()}
                     </View>

@@ -63,14 +63,6 @@ describe('App screen', () => {
             expect(queryByDisplayValue('2')).toBeTruthy();
         });
 
-        it('should only accept numbers as inputs', () => {
-            const { queryByDisplayValue, queryByText } = setup();
-
-            fireEvent(queryByDisplayValue('1'), 'onChangeText', 'abc');
-
-            expect(queryByText('€0.00 =')).toBeTruthy();
-        });
-
         it('should instruct the user to input a value if it is empty', () => {
             const { queryByDisplayValue, queryByPlaceholder } = setup();
 
@@ -273,6 +265,30 @@ describe('App screen', () => {
                     ),
                 ),
             ).toBeTruthy();
+        });
+
+        it('should instruct the user to enter a valid input in case it is invalid', () => {
+            const { getByDisplayValue, queryByText } = setup();
+
+            fireEvent(getByDisplayValue('1'), 'onChangeText', '');
+
+            expect(queryByText(strings.invalidInput)).toBeTruthy();
+
+            let currencySymbol = formatCurrency(
+                Number.parseFloat(''),
+                currencies[0].code,
+            ).replace('NaN', '');
+
+            let regex = new RegExp(currencySymbol);
+            expect(queryByText(regex)).toBeFalsy();
+
+            currencySymbol = formatCurrency(
+                Number.parseFloat(''),
+                currencies[1].code,
+            ).replace('NaN', '');
+
+            regex = new RegExp(currencySymbol);
+            expect(queryByText(regex)).toBeFalsy();
         });
     });
 });

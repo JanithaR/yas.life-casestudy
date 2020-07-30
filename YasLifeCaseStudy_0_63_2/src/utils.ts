@@ -3,11 +3,11 @@ import { currencies, baseApiUrl, latestEndpoint, fixerKey } from 'src/config';
 
 export function formatCurrency(
     value: number,
-    currency: Currency['code'] = currencies[0].code,
+    currencyCode: Currency['code'] = currencies[0].code,
 ): string {
     return new Intl.NumberFormat('en-US', {
         style: 'currency',
-        currency,
+        currency: currencyCode,
         maximumFractionDigits: 2,
     })
         .format(value)
