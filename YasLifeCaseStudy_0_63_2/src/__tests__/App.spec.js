@@ -189,6 +189,24 @@ describe('App screen', () => {
             ).toBeTruthy();
         });
 
+        it('should show error description if API threw an error', async () => {
+            callApi.mockResolvedValueOnce({
+                success: false,
+                error: {
+                    code: 104,
+                    info: 'Error description',
+                },
+            });
+
+            const { queryByText, getByA11yRole } = setup();
+
+            fireEvent(getByA11yRole('button'), 'onPress');
+
+            await waitFor(() => getByA11yRole('button'));
+
+            expect(queryByText('Error description')).toBeTruthy();
+        });
+
         it('should update the converted value when currency changes', async () => {
             const { getByA11yRole, queryByText, getByTestId } = setup();
 

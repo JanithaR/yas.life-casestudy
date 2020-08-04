@@ -7,3 +7,7 @@ export interface FixerLatest {
     date: string;
     rates: Rate;
 }
+
+export function instanceOfFixerLatest(object: any): object is FixerLatest {
+    return 'rates' in object;
+}

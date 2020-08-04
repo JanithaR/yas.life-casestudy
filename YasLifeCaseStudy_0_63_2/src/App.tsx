@@ -33,7 +33,13 @@ import {
 } from 'src/utils';
 import { currencies } from 'src/config';
 import { callApi } from 'src/api';
-import { FixerLatest, Rate } from 'src/interfaces';
+import {
+    FixerLatest,
+    Rate,
+    instanceOfFixerLatest,
+    FixerError,
+    instanceOfFixerError,
+} from 'src/interfaces';
 
 declare const global: { HermesInternal: null | {} };
 
@@ -42,6 +48,7 @@ const App = () => {
     const [input, setInput] = React.useState<string>('1');
     const [rates, setRates] = React.useState<Rate>({});
     const [loading, setLoading] = React.useState<boolean>(false);
+    const [error, setError] = React.useState<string | null>(null);
 
     function onCurrencyChange(value: string | number): void {
         let validatedCurrency: string;
@@ -58,10 +65,19 @@ const App = () => {
     function onConvertPress(): void {
         setLoading(true);
 
-        callApi(composeLatestEndpointUrl()).then((data: FixerLatest) => {
-            setLoading(false);
-            setRates(data.rates);
-        });
+        callApi(composeLatestEndpointUrl()).then(
+            (data: FixerLatest | FixerError | Error) => {
+                setLoading(false);
+
+                if (instanceOfFixerLatest(data)) {
+                    setRates(data.rates);
+                } else if (instanceOfFixerError(data)) {
+                    setError(data.error.info);
+                } else {
+                    setError(data.message);
+                }
+            },
+        );
     }
 
     function onInputChange(value: string): void {
@@ -121,6 +137,10 @@ const App = () => {
     function renderInstructions(): ReactElement | null {
         if (isNaN(Number.parseFloat(input))) {
             return <Text>{strings.invalidInput}</Text>;
+        }
+
+        if (error) {
+            return <Text style={styles.errorText}>{error}</Text>;
         }
 
         if (Object.keys(rates).length === 0) {
@@ -226,6 +246,9 @@ const styles = StyleSheet.create({
     outputText: {
         color: colors.primary,
         fontSize: 56,
+    },
+    errorText: {
+        color: 'red',
     },
 });
 
