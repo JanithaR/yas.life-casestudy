@@ -48,18 +48,17 @@ describe('App screen', () => {
 
     it('should render as expected when an input is converted', async () => {
         const { queryByA11yRole, toJSON } = setup();
-        const button = queryByA11yRole('button');
 
-        fireEvent(button, 'onPress');
+        fireEvent(queryByA11yRole('button'), 'onPress');
 
-        await waitFor(() => button);
+        await waitFor(() => queryByA11yRole('button'));
 
         expect(toJSON()).toMatchSnapshot();
     });
 
     describe('Input', () => {
         beforeEach(() => {
-            AsyncStorage.setItem.mockClear();
+            AsyncStorage.getItem.mockResolvedValue(null);
         });
 
         it('should be rendered', () => {
@@ -93,15 +92,15 @@ describe('App screen', () => {
 
             const { queryByText } = setup();
 
-            await waitFor(() => {
-                queryByText('Async storage read exception');
-            });
+            await waitFor(() => queryByText('Async storage read exception'));
 
             expect(queryByText('Async storage read exception')).toBeTruthy();
         });
 
-        it('should update the input field and cache the value when typed', () => {
+        it('should update the input field and cache the value when typed', async () => {
             const { queryByDisplayValue } = setup();
+
+            await waitFor(() => queryByDisplayValue('1'));
 
             fireEvent(queryByDisplayValue('1'), 'onChangeText', '2');
 
@@ -127,9 +126,7 @@ describe('App screen', () => {
 
             fireEvent(queryByDisplayValue('1'), 'onChangeText', '2');
 
-            await waitFor(() => {
-                queryByText('Async storage write exception');
-            });
+            await waitFor(() => queryByText('Async storage write exception'));
 
             expect(queryByText('Async storage write exception')).toBeTruthy();
         });
@@ -140,6 +137,10 @@ describe('App screen', () => {
             fireEvent(queryByDisplayValue('1'), 'onChangeText', '');
 
             expect(queryByPlaceholder(strings.inputPlaceholder)).toBeTruthy();
+        });
+
+        afterEach(() => {
+            AsyncStorage.setItem.mockClear();
         });
     });
 
@@ -178,7 +179,7 @@ describe('App screen', () => {
             expect(button).toHaveTextContent(strings.convert);
         });
 
-        it('should call callApi() from api utils when pressed', () => {
+        it('should call callApi() from api utils when pressed', async () => {
             const { queryByA11yRole } = setup();
 
             fireEvent(queryByA11yRole('button'), 'onPress');
@@ -190,6 +191,8 @@ describe('App screen', () => {
                     /^http:\/\/data.fixer.io\/api\/latest\?access_key=[a-z0-9]{32}&symbols=.+$/,
                 ),
             );
+
+            await waitFor(() => queryByA11yRole('button'));
         });
 
         it('should not be rendered when fetching rates, instead an activity indicator should be rendered', async () => {
@@ -199,6 +202,8 @@ describe('App screen', () => {
 
             expect(queryByA11yRole('button')).toBeFalsy();
             expect(getByTestId(testIds.activityIndicator)).toBeTruthy();
+
+            await waitFor(() => queryByA11yRole('button'));
         });
     });
 
