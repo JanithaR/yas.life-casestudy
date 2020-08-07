@@ -1,6 +1,8 @@
-import { Currency } from 'src/interfaces';
-import { currencies, baseApiUrl, latestEndpoint, fixerKey } from 'src/config';
 import AsyncStorage from '@react-native-community/async-storage';
+import { FIXER_KEY } from '@env';
+
+import { Currency } from 'src/interfaces';
+import { currencies, baseApiUrl, latestEndpoint } from 'src/config';
 
 export function formatCurrency(
     value: number,
@@ -32,7 +34,7 @@ export const getCommaSeparatedCurrencyCodes = (): string => {
 };
 
 export function composeLatestEndpointUrl(): string {
-    return `${baseApiUrl}${latestEndpoint}?access_key=${fixerKey}&symbols=${getCommaSeparatedCurrencyCodes()}`;
+    return `${baseApiUrl}${latestEndpoint}?access_key=${FIXER_KEY}&symbols=${getCommaSeparatedCurrencyCodes()}`;
 }
 
 export async function cacheInput(value: string): Promise<void> {

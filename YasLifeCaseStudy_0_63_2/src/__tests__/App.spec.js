@@ -185,8 +185,11 @@ describe('App screen', () => {
             fireEvent(queryByA11yRole('button'), 'onPress');
 
             expect(callApi).toHaveBeenCalledTimes(1);
+
             expect(callApi).toHaveBeenCalledWith(
-                `${baseApiUrl}${latestEndpoint}?access_key=${fixerKey}&symbols=${getCommaSeparatedCurrencyCodes()}`,
+                expect.stringMatching(
+                    /^http:\/\/data.fixer.io\/api\/latest\?access_key=[a-z0-9]{32}&symbols=.+$/,
+                ),
             );
         });
 
@@ -330,14 +333,14 @@ describe('App screen', () => {
             fireEvent(
                 getByTestId(testIds.picker),
                 'onValueChange',
-                currencies[3].code,
+                currencies[2].code,
             );
 
             expect(
                 queryByText(
                     formatCurrency(
-                        convertCurrency(1, apiResult.rates[currencies[3].code]),
-                        currencies[3].code,
+                        convertCurrency(1, apiResult.rates[currencies[2].code]),
+                        currencies[2].code,
                     ),
                 ),
             ).toBeTruthy();

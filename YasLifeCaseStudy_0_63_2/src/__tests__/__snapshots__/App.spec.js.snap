@@ -56,24 +56,9 @@ exports[`App screen should render as expected on launch 1`] = `
                   "value": "LKR",
                 },
                 Object {
-                  "label": "Danmark",
-                  "textColor": undefined,
-                  "value": "DKK",
-                },
-                Object {
-                  "label": "India",
-                  "textColor": undefined,
-                  "value": "INR",
-                },
-                Object {
                   "label": "US",
                   "textColor": undefined,
                   "value": "USD",
-                },
-                Object {
-                  "label": "Thailand",
-                  "textColor": undefined,
-                  "value": "THB",
                 },
               ]
             }
@@ -232,24 +217,9 @@ exports[`App screen should render as expected when an input is converted 1`] = `
                   "value": "LKR",
                 },
                 Object {
-                  "label": "Danmark",
-                  "textColor": undefined,
-                  "value": "DKK",
-                },
-                Object {
-                  "label": "India",
-                  "textColor": undefined,
-                  "value": "INR",
-                },
-                Object {
                   "label": "US",
                   "textColor": undefined,
                   "value": "USD",
-                },
-                Object {
-                  "label": "Thailand",
-                  "textColor": undefined,
-                  "value": "THB",
                 },
               ]
             }
