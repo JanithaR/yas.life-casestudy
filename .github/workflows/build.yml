@@ -25,5 +25,5 @@ jobs:
             - name: Upload Artifact
               uses: actions/upload-artifact@v1
               with:
-                  name: app-release.apk
+                  name: apks
                   path: YasLifeCaseStudy_0_63_2/android/app/build/outputs/apk/release/
