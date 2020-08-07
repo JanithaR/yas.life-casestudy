@@ -9,16 +9,20 @@ jobs:
         steps:
             - uses: actions/checkout@v2
             - name: Install npm dependencies
+              env:
+                  FIXER_KEY: cb352e0c5ce304d7086f7430cba9f6fb
               run: |
-                  npm install
+                  cd YasLifeCaseStudy_0_63_2 && npm install && npm test
     build-android:
         needs: install-and-test
         runs-on: ubuntu-latest
         steps:
             - uses: actions/checkout@v2
             - name: Install npm dependencies
+              env:
+                  FIXER_KEY: cb352e0c5ce304d7086f7430cba9f6fb
               run: |
-                  npm install
+                  cd YasLifeCaseStudy_0_63_2 && npm install
             - name: Build Android Release
               run: |
                   cd YasLifeCaseStudy_0_63_2/android && ./gradlew assembleRelease
@@ -26,4 +30,4 @@ jobs:
               uses: actions/upload-artifact@v1
               with:
                   name: app-release.apk
-                  path: android/app/build/outputs/apk/release/
+                  path: YasLifeCaseStudy_0_63_2/android/app/build/outputs/apk/release/
