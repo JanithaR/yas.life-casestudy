@@ -1,8 +1,11 @@
 import React from 'react';
 import { render, fireEvent, waitFor } from 'react-native-testing-library';
 import {
+    // eslint-disable-next-line no-unused-vars
     toBeEnabled,
+    // eslint-disable-next-line no-unused-vars
     toHaveTextContent,
+    // eslint-disable-next-line no-unused-vars
     toHaveProp,
 } from '@testing-library/jest-native';
 import AsyncStorage from '@react-native-community/async-storage';
@@ -10,12 +13,8 @@ import AsyncStorage from '@react-native-community/async-storage';
 import App from 'src/App';
 import strings from 'src/strings';
 import testIds from 'src/testIds';
-import {
-    convertCurrency,
-    formatCurrency,
-    getCommaSeparatedCurrencyCodes,
-} from 'src/utils';
-import { currencies, baseApiUrl, latestEndpoint, fixerKey } from 'src/config';
+import { convertCurrency, formatCurrency } from 'src/utils';
+import { currencies } from 'src/config';
 import { callApi } from 'src/api';
 
 jest.mock('src/api', () => ({
