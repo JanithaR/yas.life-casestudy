@@ -172,11 +172,7 @@ const App = () => {
         }
 
         if (loading) {
-            return (
-                <Text style={styles.errorText}>
-                    {strings.fetchingLatestRates}
-                </Text>
-            );
+            return <Text>{strings.fetchingLatestRates}</Text>;
         }
 
         if (error) {
