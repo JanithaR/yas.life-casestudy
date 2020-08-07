@@ -30,6 +30,8 @@ import {
     formatCurrency,
     convertCurrency,
     composeLatestEndpointUrl,
+    cacheInput,
+    readCachedInput,
 } from 'src/utils';
 import { currencies } from 'src/config';
 import { callApi } from 'src/api';
@@ -49,6 +51,33 @@ const App = () => {
     const [rates, setRates] = React.useState<Rate>({});
     const [loading, setLoading] = React.useState<boolean>(false);
     const [error, setError] = React.useState<string | null>(null);
+    const firstRender = React.useRef(true);
+
+    React.useEffect(() => {
+        async function checkForCachedInput() {
+            try {
+                const cachedInput: string | null = await readCachedInput();
+
+                if (cachedInput !== null) {
+                    setInput(cachedInput);
+                }
+            } catch (readCacheError) {
+                setError(readCacheError.message);
+            }
+        }
+
+        checkForCachedInput();
+    }, []);
+
+    React.useEffect(() => {
+        if (firstRender.current) {
+            firstRender.current = false;
+        } else {
+            cacheInput(input).catch((writeCacheError) => {
+                setError(writeCacheError.message);
+            });
+        }
+    }, [input]);
 
     function onCurrencyChange(value: string | number): void {
         let validatedCurrency: string;
@@ -65,8 +94,8 @@ const App = () => {
     function onConvertPress(): void {
         setLoading(true);
 
-        callApi(composeLatestEndpointUrl()).then(
-            (data: FixerLatest | FixerError | Error) => {
+        callApi(composeLatestEndpointUrl())
+            .then((data: FixerLatest | FixerError | Error) => {
                 setLoading(false);
 
                 if (instanceOfFixerLatest(data)) {
@@ -76,8 +105,11 @@ const App = () => {
                 } else {
                     setError(data.message);
                 }
-            },
-        );
+            })
+            .catch((apiError) => {
+                setLoading(false);
+                setError(apiError.message);
+            });
     }
 
     function onInputChange(value: string): void {
@@ -139,6 +171,14 @@ const App = () => {
             return <Text>{strings.invalidInput}</Text>;
         }
 
+        if (loading) {
+            return (
+                <Text style={styles.errorText}>
+                    {strings.fetchingLatestRates}
+                </Text>
+            );
+        }
+
         if (error) {
             return <Text style={styles.errorText}>{error}</Text>;
         }
@@ -171,11 +211,7 @@ const App = () => {
                     style={styles.scrollView}>
                     <View style={styles.sectionWrapper}>
                         <TextInput
-                            value={
-                                Number.parseFloat(input) > 0
-                                    ? input.toString()
-                                    : ''
-                            }
+                            value={input}
                             onChangeText={onInputChange}
                             keyboardType="decimal-pad"
                             selectTextOnFocus
@@ -245,7 +281,7 @@ const styles = StyleSheet.create({
     },
     outputText: {
         color: colors.primary,
-        fontSize: 56,
+        fontSize: 36,
     },
     errorText: {
         color: 'red',

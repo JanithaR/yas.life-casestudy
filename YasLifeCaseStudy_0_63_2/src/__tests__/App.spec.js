@@ -5,6 +5,7 @@ import {
     toHaveTextContent,
     toHaveProp,
 } from '@testing-library/jest-native';
+import AsyncStorage from '@react-native-community/async-storage';
 
 import App from 'src/App';
 import strings from 'src/strings';
@@ -40,13 +41,28 @@ function setup(): RenderAPI {
 }
 
 describe('App screen', () => {
-    it('should render as expected', () => {
+    it('should render as expected on launch', () => {
         const { toJSON } = setup();
 
         expect(toJSON()).toMatchSnapshot();
     });
 
-    describe('Value input', () => {
+    it('should render as expected when an input is converted', async () => {
+        const { queryByA11yRole, toJSON } = setup();
+        const button = queryByA11yRole('button');
+
+        fireEvent(button, 'onPress');
+
+        await waitFor(() => button);
+
+        expect(toJSON()).toMatchSnapshot();
+    });
+
+    describe('Input', () => {
+        beforeEach(() => {
+            AsyncStorage.setItem.mockClear();
+        });
+
         it('should be rendered', () => {
             const { queryByDisplayValue } = setup();
             const input = queryByDisplayValue('1');
@@ -55,12 +71,68 @@ describe('App screen', () => {
             expect(input).toBeEnabled();
         });
 
-        it('should update the input field when typed', () => {
+        it('should show 1 as default value', () => {
+            const { queryByDisplayValue } = setup();
+
+            expect(queryByDisplayValue('1')).toBeTruthy();
+        });
+
+        it('should be pre populated if a cached input exists', async () => {
+            AsyncStorage.getItem.mockResolvedValueOnce('1234.56');
+
+            const { queryByDisplayValue } = setup();
+
+            await waitFor(() => queryByDisplayValue('1234.56'));
+
+            expect(queryByDisplayValue('1234.56')).toBeTruthy();
+        });
+
+        it('should show default value 1 if an exception occurred when reading cached input', async () => {
+            AsyncStorage.getItem.mockRejectedValueOnce({
+                message: 'Async storage read exception',
+            });
+
+            const { queryByText } = setup();
+
+            await waitFor(() => {
+                queryByText('Async storage read exception');
+            });
+
+            expect(queryByText('Async storage read exception')).toBeTruthy();
+        });
+
+        it('should update the input field and cache the value when typed', () => {
             const { queryByDisplayValue } = setup();
 
             fireEvent(queryByDisplayValue('1'), 'onChangeText', '2');
 
             expect(queryByDisplayValue('2')).toBeTruthy();
+
+            expect(AsyncStorage.setItem).toHaveBeenCalledTimes(1);
+            expect(AsyncStorage.setItem).toBeCalledWith('input', '2');
+
+            fireEvent(queryByDisplayValue('2'), 'onChangeText', '3.5');
+
+            expect(queryByDisplayValue('3.5')).toBeTruthy();
+
+            expect(AsyncStorage.setItem).toHaveBeenCalledTimes(2);
+            expect(AsyncStorage.setItem).toBeCalledWith('input', '3.5');
+        });
+
+        it('should show an error if writing cache failed', async () => {
+            AsyncStorage.setItem.mockRejectedValueOnce({
+                message: 'Async storage write exception',
+            });
+
+            const { queryByDisplayValue, queryByText } = setup();
+
+            fireEvent(queryByDisplayValue('1'), 'onChangeText', '2');
+
+            await waitFor(() => {
+                queryByText('Async storage write exception');
+            });
+
+            expect(queryByText('Async storage write exception')).toBeTruthy();
         });
 
         it('should instruct the user to input a value if it is empty', () => {
@@ -95,6 +167,10 @@ describe('App screen', () => {
     });
 
     describe('Convert button', () => {
+        beforeEach(() => {
+            callApi.mockClear();
+        });
+
         it('should be rendered', () => {
             const { queryByA11yRole } = setup();
             const button = queryByA11yRole('button');
@@ -125,6 +201,12 @@ describe('App screen', () => {
     });
 
     describe('Output', () => {
+        beforeEach(() => {
+            AsyncStorage.getItem.mockImplementationOnce((key: string) =>
+                Promise.resolve(null),
+            );
+        });
+
         it('should show the input value in base currency', () => {
             const { queryByText } = setup();
 
@@ -160,14 +242,14 @@ describe('App screen', () => {
             expect(queryByText(strings.clickConvert)).toBeTruthy();
         });
 
-        it('should hide instructions upon clicking Convert', async () => {
+        it('should show latest rates fetching status upon clicking Convert', async () => {
             const { getByA11yRole, queryByText } = setup();
 
             fireEvent(getByA11yRole('button'), 'onPress');
 
             await waitFor(() => getByA11yRole('button'));
 
-            expect(queryByText(strings.clickConvert)).toBeFalsy();
+            expect(queryByText(strings.fetchingLatestRates)).toBeFalsy();
         });
 
         it('should show converted value in requested currency', async () => {
@@ -194,7 +276,7 @@ describe('App screen', () => {
                 success: false,
                 error: {
                     code: 104,
-                    info: 'Error description',
+                    info: 'Fixer API error description',
                 },
             });
 
@@ -204,7 +286,21 @@ describe('App screen', () => {
 
             await waitFor(() => getByA11yRole('button'));
 
-            expect(queryByText('Error description')).toBeTruthy();
+            expect(queryByText('Fixer API error description')).toBeTruthy();
+        });
+
+        it('should show error description if an API exception occurred', async () => {
+            callApi.mockRejectedValueOnce({
+                message: 'API exception',
+            });
+
+            const { queryByText, getByA11yRole } = setup();
+
+            fireEvent(getByA11yRole('button'), 'onPress');
+
+            await waitFor(() => getByA11yRole('button'));
+
+            expect(queryByText('API exception')).toBeTruthy();
         });
 
         it('should update the converted value when currency changes', async () => {
