@@ -11,8 +11,7 @@ jobs:
             - uses: actions/checkout@v2
             - name: Install npm dependencies
               run: |
-                  npm install
-                  npm test
+                  npm install && npm test
     build-android:
         needs: install-and-test
         runs-on: ubuntu-latest
