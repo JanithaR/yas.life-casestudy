@@ -188,7 +188,7 @@ describe('App screen', () => {
 
             expect(callApi).toHaveBeenCalledWith(
                 expect.stringMatching(
-                    /^http:\/\/data.fixer.io\/api\/latest\?access_key=[a-z0-9]{32}&symbols=.+$/,
+                    /^http:\/\/data.fixer.io\/api\/latest\?access_key=[a-z0-9]{32}&symbols=[A-Z,]+$/,
                 ),
             );
 
