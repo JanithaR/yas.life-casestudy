@@ -7,6 +7,8 @@ jobs:
     install-and-test:
         runs-on: ubuntu-latest
         steps:
+            - env:
+                  FIXER_KEY: ${{ secrets.FIXER_KEY }}
             - uses: actions/checkout@v2
             - name: Install npm dependencies
               run: |
@@ -15,6 +17,8 @@ jobs:
         needs: install-and-test
         runs-on: ubuntu-latest
         steps:
+            - env:
+                  FIXER_KEY: ${{ secrets.FIXER_KEY }}
             - uses: actions/checkout@v2
             - name: Install npm dependencies
               run: |
