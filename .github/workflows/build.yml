@@ -9,11 +9,7 @@ jobs:
         steps:
             - uses: actions/checkout@v2
             - name: Install npm dependencies
-              run: cd YasLifeCaseStudy_0_63_2 && npm install
-            - name: Set fixer key
-              run: cd YasLifeCaseStudy_0_63_2 && echo $FIXER_KEY=${{ secrets.FIXER_KEY }} > .env
-            - name: Test
-              run: cd YasLifeCaseStudy_0_63_2 && npm test
+              run: cd YasLifeCaseStudy_0_63_2 && npm install && echo $FIXER_KEY=${{ secrets.FIXER_KEY }} > .env && npm test
     build-android:
         needs: install-and-test
         runs-on: ubuntu-latest
