@@ -6,4 +6,5 @@ export const currencies: Currency[] = [
     { label: 'Europe', code: 'EUR' },
     { label: 'Sri Lanka', code: 'LKR' },
     { label: 'US', code: 'USD' },
+    { label: 'United Arab Emirates', code: 'AED' },
 ];

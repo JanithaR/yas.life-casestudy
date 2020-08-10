@@ -60,6 +60,11 @@ exports[`App screen should render as expected on launch 1`] = `
                   "textColor": undefined,
                   "value": "USD",
                 },
+                Object {
+                  "label": "United Arab Emirates",
+                  "textColor": undefined,
+                  "value": "AED",
+                },
               ]
             }
             onChange={[Function]}
@@ -220,6 +225,11 @@ exports[`App screen should render as expected when an input is converted 1`] = `
                   "label": "US",
                   "textColor": undefined,
                   "value": "USD",
+                },
+                Object {
+                  "label": "United Arab Emirates",
+                  "textColor": undefined,
+                  "value": "AED",
                 },
               ]
             }
