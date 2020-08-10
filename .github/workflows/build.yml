@@ -12,7 +12,7 @@ jobs:
               working-directory: ./YasLifeCaseStudy_0_63_2
               run: |
                 npm install 
-                'echo "$FIXER_KEY=${{ secrets.FIXER_KEY }}" > .env'
+                echo "$FIXER_KEY=${{ secrets.FIXER_KEY }}" > .env
                 npm test
               shell: bash
     build-android:
