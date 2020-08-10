@@ -14,6 +14,7 @@ jobs:
                 npm install 
                 'echo "$FIXER_KEY=${{ secrets.FIXER_KEY }}" > .env'
                 npm test
+              shell: bash
     build-android:
         needs: install-and-test
         runs-on: ubuntu-latest
