@@ -11,7 +11,7 @@ jobs:
             - name: Install dependencies
               working-directory: ./YasLifeCaseStudy_0_63_2
               run: |
-                cd YasLifeCaseStudy_0_63_2 && npm install 
+                npm install 
                 'echo "$FIXER_KEY=${{ secrets.FIXER_KEY }}" > .env'
                 npm test
     build-android:
