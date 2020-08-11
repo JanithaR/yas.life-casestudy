@@ -7,14 +7,17 @@ jobs:
     install-and-test:
         runs-on: ubuntu-latest
         steps:
+            - working-directory: ./YasLifeCaseStudy_0_63_2
             - uses: actions/checkout@v2
+            - name: Create env file
+              run: |
+                  touch .env
+                  echo FIXER_KEY=${{ secrets.FIXER_KEY }} >> .env
+                  cat .env
             - name: Install dependencies
-              working-directory: ./YasLifeCaseStudy_0_63_2
               run: |
                 npm install 
-                echo "$FIXER_KEY=${{ secrets.FIXER_KEY }}" > .env
                 npm test
-              shell: bash
     build-android:
         needs: install-and-test
         runs-on: ubuntu-latest
