@@ -7,9 +7,11 @@ jobs:
     install-and-test:
         runs-on: ubuntu-latest
         steps:
-            - uses: actions/checkout@v2
-            - working-directory: ./YasLifeCaseStudy_0_63_2
-              name: Create env file
+            - name: Checkout repository
+              uses: actions/checkout@v2
+            - name: Set working directory
+              working-directory: ./YasLifeCaseStudy_0_63_2
+            - name: Create env file
               run: |
                   touch .env
                   echo FIXER_KEY=${{ secrets.FIXER_KEY }} >> .env
