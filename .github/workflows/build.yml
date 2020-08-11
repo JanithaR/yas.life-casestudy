@@ -9,7 +9,7 @@ jobs:
         steps:
             - uses: actions/checkout@v2
             - working-directory: ./YasLifeCaseStudy_0_63_2
-            - name: Create env file
+              name: Create env file
               run: |
                   touch .env
                   echo FIXER_KEY=${{ secrets.FIXER_KEY }} >> .env
