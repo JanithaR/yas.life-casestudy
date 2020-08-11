@@ -1,4 +1,4 @@
-name: react-native-android-build-apk
+name: YasLifeCaseStudy_0_63_2 Test and Build
 on:
     push:
         branches:
