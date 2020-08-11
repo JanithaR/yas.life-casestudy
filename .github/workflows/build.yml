@@ -9,14 +9,14 @@ jobs:
         steps:
             - name: Checkout repository
               uses: actions/checkout@v2
-            - name: Set working directory
-              working-directory: ./YasLifeCaseStudy_0_63_2
             - name: Create env file
+              working-directory: ./YasLifeCaseStudy_0_63_2
               run: |
                   touch .env
                   echo FIXER_KEY=${{ secrets.FIXER_KEY }} >> .env
                   cat .env
             - name: Install dependencies
+              working-directory: ./YasLifeCaseStudy_0_63_2
               run: |
                 npm install 
                 npm test
