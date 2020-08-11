@@ -1,3 +1,5 @@
+![YasLifeCaseStudy_0_63_2 Test and Build](https://github.com/JanithaR/yas.life-casestudy/workflows/react-native-android-build-apk/badge.svg)
+
 # yas.life-casestudy
 
 To get started,
