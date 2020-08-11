@@ -1,4 +1,4 @@
-![YasLifeCaseStudy_0_63_2 Test and Build](https://github.com/JanithaR/yas.life-casestudy/workflows/react-native-android-build-apk/badge.svg)
+![YasLifeCaseStudy_0_63_2 Test and Build](https://github.com/JanithaR/yas.life-casestudy/workflows/YasLifeCaseStudy_0_63_2%20Test%20and%20Build/badge.svg)
 
 # yas.life-casestudy
 
