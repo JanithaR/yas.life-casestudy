@@ -13,7 +13,7 @@ jobs:
               working-directory: ./YasLifeCaseStudy_0_63_2
               run: |
                   touch .env
-                  echo FIXER_KEY=${{ secrets.FIXER_KEY }} >> .env
+                  echo FIXER_KEY=${{ secrets.FIXER_KEY }} > .env
                   cat .env
             - name: Install dependencies
               working-directory: ./YasLifeCaseStudy_0_63_2
@@ -30,7 +30,7 @@ jobs:
               working-directory: ./YasLifeCaseStudy_0_63_2
               run: |
                  touch .env
-                 echo FIXER_KEY=${{ secrets.FIXER_KEY }} >> .env
+                 echo FIXER_KEY=${{ secrets.FIXER_KEY }} > .env
                  cat .env
             - name: Install dependencies
               working-directory: ./YasLifeCaseStudy_0_63_2
