@@ -18,12 +18,12 @@ jobs:
               uses: actions/cache@v2
               with:
                   path: ~/.npm
-                  key: ${{ runner.os }}-build-node-modules-cache-${{ hashFiles('**/package-lock.json') }}
+                  key: ${{ runner.os }}-build-node-modules-cache-${{ hashFiles('yarn.lock') }}
             - name: Install dependencies and test
               working-directory: ./YasLifeCaseStudy_0_63_2
               run: |
-                npm install 
-                npm test
+                yarn 
+                yarn test
     build-android:
         needs: install-and-test
         runs-on: ubuntu-latest
