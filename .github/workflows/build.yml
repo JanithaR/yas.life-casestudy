@@ -24,7 +24,6 @@ jobs:
               run: |
                 yarn 
                 yarn test
-                yarn cache dir
     build-android:
         needs: install-and-test
         runs-on: ubuntu-latest
