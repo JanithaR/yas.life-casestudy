@@ -14,6 +14,11 @@ jobs:
               run: |
                   touch .env
                   echo FIXER_KEY=${{ secrets.FIXER_KEY }} > .env
+            - name: Cache node modules
+              uses: actions/cache@v2
+              with:
+                  path: ~/.npm
+                  key: ${{ runner.os }}-build-node-modules-cache-${{ hashFiles('**/package-lock.json') }}
             - name: Install dependencies and test
               working-directory: ./YasLifeCaseStudy_0_63_2
               run: |
