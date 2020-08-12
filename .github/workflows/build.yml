@@ -25,7 +25,7 @@ jobs:
                 yarn 
                 yarn test
     build-android:
-        needs: install-and-test
+        needs: test
         runs-on: ubuntu-latest
         steps:
             - name: Checkout repository
