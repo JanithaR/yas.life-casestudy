@@ -22,7 +22,7 @@ jobs:
             - name: Install dependencies and test
               working-directory: ./YasLifeCaseStudy_0_63_2
               run: |
-                yarn 
+                yarn --frozen-lockfile
                 yarn test
     build-android:
         needs: test
@@ -42,7 +42,7 @@ jobs:
                   key: ${{ runner.os }}-build-node-modules-cache-${{ hashFiles('**/yarn.lock') }}
             - name: Install dependencies
               working-directory: ./YasLifeCaseStudy_0_63_2
-              run: yarn
+              run: yarn --frozen-lockfile
             - name: Build Android Release
               working-directory: ./YasLifeCaseStudy_0_63_2/android
               run: ./gradlew assembleRelease
