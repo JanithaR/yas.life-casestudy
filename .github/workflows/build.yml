@@ -23,7 +23,7 @@ jobs:
               working-directory: ./YasLifeCaseStudy_0_63_2
               run: |
                 yarn --frozen-lockfile
-                yarn test
+                yarn pre-push-check
     build-android:
         needs: test
         runs-on: ubuntu-latest
