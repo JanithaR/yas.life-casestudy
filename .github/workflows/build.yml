@@ -52,7 +52,9 @@ jobs:
               run: yarn --frozen-lockfile
             - name: Build Android Release
 #               working-directory: ./YasLifeCaseStudy_0_63_2/android
-              run: ./gradlew assembleRelease
+              run: |
+                cd android
+                ./gradlew assembleRelease
             - name: Upload Artifact
               uses: actions/upload-artifact@v1
               with:
