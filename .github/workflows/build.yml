@@ -3,8 +3,8 @@ on:
     push:
         branches:
             - master
-        paths: 
-            - ./YasLifeCaseStudy_0_63_2/**
+#         paths: 
+#             - ./YasLifeCaseStudy_0_63_2/**
 defaults:
     run:
         working-directory: ./YasLifeCaseStudy_0_63_2
@@ -24,7 +24,7 @@ jobs:
               uses: actions/cache@v2
               with:
                   path: ~/.cache/yarn
-                  key: ${{ runner.os }}-build-node-modules-cache-${{ hashFiles('**/yarn.lock') }}
+                  key: ${{ runner.os }}-build-node-modules-cache-${{ hashFiles('${{ env.GITHUB_WORKSPACE }}/YasLifeCaseStudy_0_63_2/yarn.lock') }}
             - name: Install dependencies and test
 #               working-directory: ./YasLifeCaseStudy_0_63_2
               run: |
