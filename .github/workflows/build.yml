@@ -3,8 +3,8 @@ on:
     push:
         branches:
             - master
-        paths: 
-            - YasLifeCaseStudy_0_63_2/**
+#         paths: 
+#             - YasLifeCaseStudy_0_63_2/**
 defaults:
     run:
         working-directory: ./YasLifeCaseStudy_0_63_2
