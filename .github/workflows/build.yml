@@ -25,7 +25,7 @@ jobs:
               uses: actions/cache@v2
               with:
                   path: ~/.cache/yarn
-                  key: ${{ runner.os }}-build-node-modules-cache-${{ hashFiles('${{ env.GITHUB_WORKSPACE }}/YasLifeCaseStudy_0_63_2/yarn.lock') }}
+                  key: ${{ runner.os }}-build-node-modules-cache-${{ hashFiles('/YasLifeCaseStudy_0_63_2/yarn.lock') }}
             - name: Install dependencies and test
 #               working-directory: ./YasLifeCaseStudy_0_63_2
               run: |
@@ -47,7 +47,7 @@ jobs:
               uses: actions/cache@v2
               with:
                   path: ~/.cache/yarn
-                  key: ${{ runner.os }}-build-node-modules-cache-${{ hashFiles('${{ env.GITHUB_WORKSPACE }}/YasLifeCaseStudy_0_63_2/yarn.lock') }}
+                  key: ${{ runner.os }}-build-node-modules-cache-${{ hashFiles('./YasLifeCaseStudy_0_63_2/yarn.lock') }}
             - name: Install dependencies
 #               working-directory: ./YasLifeCaseStudy_0_63_2
               run: yarn --frozen-lockfile
