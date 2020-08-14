@@ -3,8 +3,8 @@ on:
     push:
         branches:
             - master
-#         paths: 
-#             - ./YasLifeCaseStudy_0_63_2/**
+        paths: 
+            - YasLifeCaseStudy_0_63_2/**
 defaults:
     run:
         working-directory: ./YasLifeCaseStudy_0_63_2
@@ -20,6 +20,7 @@ jobs:
               run: |
                   touch .env
                   echo FIXER_KEY=${{ secrets.FIXER_KEY }} > .env
+                  echo ${{ env.GITHUB_WORKSPACE }}
             - name: Cache or Restore dependencies
               uses: actions/cache@v2
               with:
