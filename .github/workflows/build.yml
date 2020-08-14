@@ -10,6 +10,7 @@ defaults:
         working-directory: ./YasLifeCaseStudy_0_63_2
 jobs:
     test:
+        name: Test
         runs-on: ubuntu-latest
         steps:
             - name: Checkout repository
@@ -30,6 +31,7 @@ jobs:
                 yarn --frozen-lockfile
                 yarn pre-push-check
     build-android:
+        name: Build Android release APKs
         needs: test
         runs-on: ubuntu-latest
         steps:
