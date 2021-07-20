@@ -15,7 +15,7 @@
         "@react-native-community/async-storage": "^1.11.0",
         "@react-native-community/picker": "^1.6.5",
         "react": "16.13.1",
-        "react-native": "0.63.0",
+        "react-native": "0.64.1",
         "react-native-dotenv": "^2.3.0"
     },
     "devDependencies": {
